@@ -12,8 +12,6 @@ namespace BlossomiShymae.GrrrLCU
             ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         });
 
-        internal static SemaphoreSlim Lock { get; } = new(1,1);
-
         internal static ProcessInfo GetProcessInfo()
         {
             ProcessInfo? processInfo = null;
@@ -48,7 +46,6 @@ namespace BlossomiShymae.GrrrLCU
         /// Send a request to the League Client.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="processInfo"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public static async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
@@ -56,22 +53,13 @@ namespace BlossomiShymae.GrrrLCU
             var processInfo = GetProcessInfo();
             var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
 
-            // Semaphore is used to avoid an unhandled exception from modifying the HttpClient between requests.
-            await Lock.WaitAsync(cancellationToken).ConfigureAwait(false);
-            try
-            {
-                HttpClient.BaseAddress = new Uri($"https://127.0.0.1:{processInfo.AppPort}/");
-                HttpClient.DefaultRequestHeaders.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
-                
+            var path = request.RequestUri;
+            request.RequestUri = new Uri($"https://127.0.0.1:{processInfo.AppPort}{path}");
+            request.Headers.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
+                        
+            var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-                var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-                return response;
-            }
-            finally
-            {
-                Lock.Release();
-            }
-           
+            return response;
         }
     }
 }

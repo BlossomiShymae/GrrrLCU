@@ -18,6 +18,8 @@ namespace BlossomiShymae.GrrrLCU.Tests
             var request = new HttpRequestMessage(HttpMethod.Get, "/lol-summoner/v1/current-summoner");
 
             var response = await Connector.SendAsync(request);
+            _output.WriteLine($"{response}");
+            
             var data = await response.Content.ReadFromJsonAsync<Summoner>();
             _output.WriteLine($"{data?.GameName}");
 
