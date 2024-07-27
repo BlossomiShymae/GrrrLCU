@@ -4,6 +4,34 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <Authors>BlossomiShymae</Authors>
+    <Description>A simple REST library for the LCU.</Description>
+    <PackageProjectUrl>https://github.com/BlossomiShymae/GrrrLCU</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/BlossomiShymae/GrrrLCU</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>lcu;lcuapi;leagueoflegends;lol</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
+    <Version>0.1.0</Version>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>GrrrLCU</Title>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
