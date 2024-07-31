@@ -75,13 +75,7 @@ namespace BlossomiShymae.GrrrLCU
         /// <returns></returns>
         public static async Task<HttpResponseMessage> GetAsync(Uri requestUri, CancellationToken cancellationToken = default)
         {
-            var processInfo = GetProcessInfo();
-            var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
-
-            var request = new HttpRequestMessage(HttpMethod.Get, GetLeagueClientUri(processInfo.AppPort, requestUri));
-            request.Headers.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
-
-            var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            var response = await SendAsync(HttpMethod.Get, requestUri, cancellationToken).ConfigureAwait(false);
 
             return response;
         }
