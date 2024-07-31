@@ -17,7 +17,7 @@ This library is currently compatible with .NET 8 and higher.
 Requesting with GrrrLCU is simple:
 
 ```csharp
-var response = await Connector.SendAsync(HttpMethod.Get, new Uri("lol-summoner/v1/current-summoner"));
+var response = await Connector.SendAsync(HttpMethod.Get, "/lol-summoner/v1/current-summoner");
 
 var me = await response.Content.ReadFromJsonAsync<Summoner>();
 ```
@@ -25,7 +25,7 @@ var me = await response.Content.ReadFromJsonAsync<Summoner>();
 Simpler for GET requests:
 
 ```csharp
-var response = await Connector.GetAsync(new Uri("/lol-summoner/v1/current-summoner"));
+var response = await Connector.GetAsync("/lol-summoner/v1/current-summoner");
 
 var me = await response.Content.ReadFromJsonAsync<Summoner>();
 ```
@@ -33,5 +33,5 @@ var me = await response.Content.ReadFromJsonAsync<Summoner>();
 Simplest for GET requests:
 
 ```csharp
-var me = await Connector.GetFromJsonAsync<Summoner>(new Uri("/lol-summoner/v1/current-summoner"));
+var me = await Connector.GetFromJsonAsync<Summoner>("/lol-summoner/v1/current-summoner");
 ```

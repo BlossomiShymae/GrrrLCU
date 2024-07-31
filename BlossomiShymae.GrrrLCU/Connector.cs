@@ -9,10 +9,15 @@ namespace BlossomiShymae.GrrrLCU
     /// </summary>
     public static class Connector
     {
-        internal static HttpClient HttpClient { get; set; } = new(new HttpClientHandler()
+        internal static HttpClient HttpClient { get; } = new(new HttpClientHandler()
         {
             ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         });
+
+        internal static JsonSerializerOptions JsonSerializerOptions { get; } = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
         internal static ProcessInfo GetProcessInfo()
         {
@@ -35,9 +40,9 @@ namespace BlossomiShymae.GrrrLCU
             return processInfo ?? throw new InvalidOperationException("Failed to find LCUx process.");
         }
 
-        internal static Uri GetLeagueClientUri(int appPort, Uri requestUri)
+        internal static Uri GetLeagueClientUri(int appPort, string path)
         {
-            return new Uri($"https://127.0.0.1:{appPort}{requestUri}");
+            return new Uri($"https://127.0.0.1:{appPort}{path}");
         }
 
         /// <summary>
@@ -53,15 +58,15 @@ namespace BlossomiShymae.GrrrLCU
         /// Send a request to the League Client.
         /// </summary>
         /// <param name="httpMethod"></param>
-        /// <param name="requestUri"></param>
+        /// <param name="path"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> SendAsync(HttpMethod httpMethod, Uri requestUri, CancellationToken cancellationToken = default)
+        public static async Task<HttpResponseMessage> SendAsync(HttpMethod httpMethod, string path, CancellationToken cancellationToken = default)
         {
             var processInfo = GetProcessInfo();
             var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
 
-            var request = new HttpRequestMessage(httpMethod, GetLeagueClientUri(processInfo.AppPort, requestUri));
+            var request = new HttpRequestMessage(httpMethod, GetLeagueClientUri(processInfo.AppPort, path));
             request.Headers.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
                         
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
@@ -72,12 +77,12 @@ namespace BlossomiShymae.GrrrLCU
         /// <summary>
         /// Send a GET request to the League Client.
         /// </summary>
-        /// <param name="requestUri"></param>
+        /// <param name="path"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> GetAsync(Uri requestUri, CancellationToken cancellationToken = default)
+        public static async Task<HttpResponseMessage> GetAsync(string path, CancellationToken cancellationToken = default)
         {
-            var response = await SendAsync(HttpMethod.Get, requestUri, cancellationToken).ConfigureAwait(false);
+            var response = await SendAsync(HttpMethod.Get, path, cancellationToken).ConfigureAwait(false);
             
             return response;
         }
@@ -86,15 +91,15 @@ namespace BlossomiShymae.GrrrLCU
         /// Send a GET request to the League Client for deserialized JSON data.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="requestUri"></param>
+        /// <param name="path"></param>
         /// <param name="options"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<T?> GetFromJsonAsync<T>(Uri requestUri, JsonSerializerOptions? options = default, CancellationToken cancellationToken = default)
+        public static async Task<T?> GetFromJsonAsync<T>(string path, JsonSerializerOptions? options = default, CancellationToken cancellationToken = default)
         {
-            var response = await GetAsync(requestUri, cancellationToken).ConfigureAwait(false);
+            var response = await GetAsync(path, cancellationToken).ConfigureAwait(false);
             
-            var data = await response.Content.ReadFromJsonAsync<T>(options ?? JsonSerializerOptions.Default, cancellationToken).ConfigureAwait(false);
+            var data = await response.Content.ReadFromJsonAsync<T>(options ?? JsonSerializerOptions, cancellationToken).ConfigureAwait(false);
 
             return data;
         }
