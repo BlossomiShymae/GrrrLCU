@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace BlossomiShymae.GrrrLCU
 {
@@ -76,8 +78,25 @@ namespace BlossomiShymae.GrrrLCU
         public static async Task<HttpResponseMessage> GetAsync(Uri requestUri, CancellationToken cancellationToken = default)
         {
             var response = await SendAsync(HttpMethod.Get, requestUri, cancellationToken).ConfigureAwait(false);
-
+            
             return response;
+        }
+
+        /// <summary>
+        /// Send a GET request to the League Client for deserialized JSON data.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestUri"></param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async Task<T?> GetFromJsonAsync<T>(Uri requestUri, JsonSerializerOptions? options = default, CancellationToken cancellationToken = default)
+        {
+            var response = await GetAsync(requestUri, cancellationToken).ConfigureAwait(false);
+            
+            var data = await response.Content.ReadFromJsonAsync<T>(options ?? JsonSerializerOptions.Default, cancellationToken).ConfigureAwait(false);
+
+            return data;
         }
     }
 }
