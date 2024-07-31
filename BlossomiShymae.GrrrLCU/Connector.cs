@@ -33,6 +33,11 @@ namespace BlossomiShymae.GrrrLCU
             return processInfo ?? throw new InvalidOperationException("Failed to find LCUx process.");
         }
 
+        internal static Uri GetLeagueClientUri(int appPort, Uri requestUri)
+        {
+            return new Uri($"https://127.0.0.1:{appPort}{requestUri}");
+        }
+
         /// <summary>
         /// Set the timeout for the internal HttpClient.
         /// </summary>
@@ -54,9 +59,28 @@ namespace BlossomiShymae.GrrrLCU
             var processInfo = GetProcessInfo();
             var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
 
-            var request = new HttpRequestMessage(httpMethod, new Uri($"https://127.0.0.1:{processInfo.AppPort}{requestUri}"));
+            var request = new HttpRequestMessage(httpMethod, GetLeagueClientUri(processInfo.AppPort, requestUri));
             request.Headers.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
                         
+            var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+
+            return response;
+        }
+
+        /// <summary>
+        /// Send a GET request to the League Client.
+        /// </summary>
+        /// <param name="requestUri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async Task<HttpResponseMessage> GetAsync(Uri requestUri, CancellationToken cancellationToken = default)
+        {
+            var processInfo = GetProcessInfo();
+            var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, GetLeagueClientUri(processInfo.AppPort, requestUri));
+            request.Headers.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
+
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             return response;
