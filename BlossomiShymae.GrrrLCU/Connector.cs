@@ -45,16 +45,16 @@ namespace BlossomiShymae.GrrrLCU
         /// <summary>
         /// Send a request to the League Client.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="httpMethod"></param>
+        /// <param name="requestUri"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
+        public static async Task<HttpResponseMessage> SendAsync(HttpMethod httpMethod, Uri requestUri, CancellationToken cancellationToken = default)
         {
             var processInfo = GetProcessInfo();
             var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
 
-            var path = request.RequestUri;
-            request.RequestUri = new Uri($"https://127.0.0.1:{processInfo.AppPort}{path}");
+            var request = new HttpRequestMessage(httpMethod, new Uri($"https://127.0.0.1:{processInfo.AppPort}{requestUri}"));
             request.Headers.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
                         
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
