@@ -13,15 +13,32 @@ namespace BlossomiShymae.GrrrLCU.Tests
         }
 
         [Fact]
-        public async Task RequestTest()
+        public async Task SendAsyncTest()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/lol-summoner/v1/current-summoner");
-
-            var response = await Connector.SendAsync(request);
-            _output.WriteLine($"{response}");
+            var response = await Connector.SendAsync(HttpMethod.Get, new Uri("/lol-summoner/v1/current-summoner"));
             
             var data = await response.Content.ReadFromJsonAsync<Summoner>();
-            _output.WriteLine($"{data?.GameName}");
+            _output.WriteLine($"{nameof(Connector.SendAsync)}: {data?.GameName}");
+
+            Assert.True(data != null);
+        }
+
+        [Fact]
+        public async Task GetAsyncTest()
+        {
+            var response = await Connector.GetAsync(new Uri("/lol-summoner/v1/current-summoner"));
+
+            var data = await response.Content.ReadFromJsonAsync<Summoner>();
+            _output.WriteLine($"{nameof(Connector.GetAsync)}: {data?.GameName}");
+
+            Assert.True(data != null);
+        }
+
+        [Fact]
+        public async Task GetFromJsonAsyncTest()
+        {
+            var data = await Connector.GetFromJsonAsync<Summoner>(new Uri("/lol-summoner/v1/current-summoner"));
+            _output.WriteLine($"{nameof(Connector.GetFromJsonAsync)}: {data?.GameName}");
 
             Assert.True(data != null);
         }
