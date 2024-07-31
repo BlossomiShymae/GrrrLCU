@@ -12,17 +12,26 @@ This library is currently compatible with .NET 8 and higher.
   <img src="https://contrib.rocks/image?repo=BlossomiShymae/GrrrLCU" />
 </a>
 
-## Making a request to the LCU
+## Requesting the LCU
 
-Making a request with GrrrLCU is simple:
+Requesting with GrrrLCU is simple:
+
 ```csharp
-// Create your request message. :3
-var request = new HttpRequestMessage(HttpMethod.Get, "/lol-summoner/v1/current-summoner");
+var response = await Connector.SendAsync(HttpMethod.Get, new Uri("lol-summoner/v1/current-summoner"));
 
-// Send a request! :o
-var response = await Connector.SendAsync(request);
-
-// Get your data. Provide your types. :>
 var me = await response.Content.ReadFromJsonAsync<Summoner>();
 ```
-As always, don't forget to use exception handling!
+
+Simpler for GET requests:
+
+```csharp
+var response = await Connector.GetAsync(new Uri("/lol-summoner/v1/current-summoner"));
+
+var me = await response.Content.ReadFromJsonAsync<Summoner>();
+```
+
+Simplest for GET requests:
+
+```csharp
+var me = await Connector.GetFromJsonAsync<Summoner>(new Uri("/lol-summoner/v1/current-summoner"));
+```
