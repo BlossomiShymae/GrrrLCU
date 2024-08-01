@@ -19,7 +19,12 @@ namespace BlossomiShymae.GrrrLCU
             PropertyNameCaseInsensitive = true
         };
 
-        internal static ProcessInfo GetProcessInfo()
+        /// <summary>
+        /// Get information of the League Client process.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static ProcessInfo GetProcessInfo()
         {
             ProcessInfo? processInfo = null;
 
@@ -40,7 +45,13 @@ namespace BlossomiShymae.GrrrLCU
             return processInfo ?? throw new InvalidOperationException("Failed to find LCUx process.");
         }
 
-        internal static Uri GetLeagueClientUri(int appPort, string path)
+        /// <summary>
+        /// Get an Uri of the running League Client API.
+        /// </summary>
+        /// <param name="appPort"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static Uri GetLeagueClientUri(int appPort, string path)
         {
             return new Uri($"https://127.0.0.1:{appPort}{path}");
         }

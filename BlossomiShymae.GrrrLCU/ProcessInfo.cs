@@ -2,7 +2,10 @@ using System.Diagnostics;
 
 namespace BlossomiShymae.GrrrLCU
 {
-    internal class ProcessInfo
+    /// <summary>
+    /// Represents process information of the League Client.
+    /// </summary>
+    public class ProcessInfo
     {
         /// <summary>
         /// The authentication token for the LCU.
@@ -16,7 +19,7 @@ namespace BlossomiShymae.GrrrLCU
 
         private Dictionary<string, string> _args { get; set; } = [];
 
-        public ProcessInfo(Process process)
+        internal ProcessInfo(Process process)
         {
             var rc = ProcessCommandLine.Retrieve(process, out var cl);
             if (rc == 0)
