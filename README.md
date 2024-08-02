@@ -35,3 +35,10 @@ Simplest for GET requests:
 ```csharp
 var me = await Connector.GetFromJsonAsync<Summoner>("/lol-summoner/v1/current-summoner");
 ```
+
+Utilities:
+
+```csharp
+var processInfo = Connector.GetProcessInfo();
+var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
+```
