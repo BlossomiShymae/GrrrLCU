@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <Authors>BlossomiShymae</Authors>
-    <Description>A simple REST library for the LCU.</Description>
+    <Description>A simple wrapper for the LCU.</Description>
     <PackageProjectUrl>https://github.com/BlossomiShymae/GrrrLCU</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/BlossomiShymae/GrrrLCU</RepositoryUrl>
@@ -15,7 +15,7 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>lcu;lcuapi;leagueoflegends;lol</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
-    <Version>0.4.0</Version>
+    <Version>0.5.0</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Title>GrrrLCU</Title>
   </PropertyGroup>
