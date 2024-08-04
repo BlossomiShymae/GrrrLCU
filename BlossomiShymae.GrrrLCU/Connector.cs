@@ -1,6 +1,9 @@
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Net.WebSockets;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using Websocket.Client;
 
 namespace BlossomiShymae.GrrrLCU
 {
@@ -114,5 +117,35 @@ namespace BlossomiShymae.GrrrLCU
 
             return data;
         }
+
+        /// <summary>
+        /// Create a Websocket client with logger for the League Client.
+        /// </summary>
+        /// <returns></returns>
+        public static LcuWebsocketClient CreateLcuWebsocketClient(ILogger<WebsocketClient>? logger)
+        {
+            var processInfo = GetProcessInfo();
+            var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
+            var uri = new Uri($"wss://127.0.0.1:{processInfo.AppPort}/");
+            ClientWebSocket factory() => new()
+            {
+                Options =
+                {
+                    Credentials = riotAuthentication.ToNetworkCredential(),
+                    RemoteCertificateValidationCallback = (a, b, c, d) => true,
+                },
+            };
+            
+            var client = new LcuWebsocketClient(uri, logger, factory);
+
+            return client;
+        }
+
+        /// <summary>
+        /// Create a Websocket client for the League client.
+        /// </summary>
+        /// <returns></returns>
+        public static LcuWebsocketClient CreateLcuWebsocketClient() =>
+            CreateLcuWebsocketClient(null);
     }
 }

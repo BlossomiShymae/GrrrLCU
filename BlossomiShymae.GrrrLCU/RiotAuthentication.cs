@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -10,13 +11,17 @@ namespace BlossomiShymae.GrrrLCU
     public class RiotAuthentication(string RemotingAuthToken)
     {
         /// <summary>
+        /// Username component of the authentication;
+        /// </summary>
+        public string Username { get; } = "riot";
+        /// <summary>
         /// Password component of the authentication.
         /// </summary>
         public string Password { get; } = RemotingAuthToken;
         /// <summary>
         /// Authentication value before Base64 conversion.
         /// </summary>
-        public string RawValue { get => $"riot:{Password}"; }
+        public string RawValue { get => $"{Username}:{Password}"; }
         /// <summary>
         /// Authentication value in Base64 format.
         /// </summary>
@@ -29,6 +34,15 @@ namespace BlossomiShymae.GrrrLCU
         public AuthenticationHeaderValue ToAuthenticationHeaderValue()
         {
             return new AuthenticationHeaderValue("Basic", Value);
+        }
+
+        /// <summary>
+        /// Get an NetworkCredential instance.
+        /// </summary>
+        /// <returns></returns>
+        public NetworkCredential ToNetworkCredential()
+        {
+            return new NetworkCredential(Username, Password);
         }
     }
 }
