@@ -4,7 +4,7 @@
 
 GrrrLCU is a wrapper for the LCU API which is unofficially provided by Riot Games.
 
-This library is currently compatible with .NET 8 and higher.
+This library is currently compatible with .NET 8 and higher for Windows.
 
 ## Contributors
 
@@ -78,7 +78,7 @@ Use it:
 await client.Start();
 
 // Subscribe to every event that the League Client sends.
-var message = new Event(RequestType.Subscribe, Event.Kinds.OnJsonApiEvent);
+var message = new EventMessage(RequestType.Subscribe, EventMessage.Kinds.OnJsonApiEvent);
 client.Send(message);
 
 // We will need an event loop for the background thread to process.
