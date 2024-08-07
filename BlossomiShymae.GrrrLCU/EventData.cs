@@ -3,12 +3,12 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// Represents the data of an League Client websocket message.
     /// </summary>
-    public class EventData(string? data, string eventType, string uri)
+    public class EventData(Dictionary<string, object>? data, string eventType, string uri)
     {
         /// <summary>
-        /// The payload of the data as a JSON string.
+        /// The payload of the data as an weak-typed dictionary.
         /// </summary>
-        public string? Data { get; } = data;
+        public Dictionary<string, object>? Data { get; } = data;
         /// <summary>
         /// The type of the event. E.g. "Update".
         /// </summary>

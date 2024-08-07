@@ -10,7 +10,6 @@ namespace BlossomiShymae.GrrrLCU
     {
         private static JsonSerializerOptions s_options =  new()
         { 
-            PropertyNameCaseInsensitive = true,
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
@@ -62,7 +61,7 @@ namespace BlossomiShymae.GrrrLCU
             Kind = array[1]!.GetValue<string>()!;
             
             var obj = array[2]!.AsObject();
-            var data = obj["data"]?.ToJsonString(s_options) ?? null;
+            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(obj["data"], s_options);
             var eventType = obj["eventType"]!.GetValue<string>();
             var uri = obj["uri"]!.GetValue<string>();
             Data = new EventData(data, eventType, uri);
