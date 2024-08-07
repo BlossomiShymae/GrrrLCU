@@ -61,7 +61,7 @@ namespace BlossomiShymae.GrrrLCU
             Kind = array[1]!.GetValue<string>()!;
             
             var obj = array[2]!.AsObject();
-            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(obj["data"], s_options);
+            var data = obj["data"]?.DeepClone() ?? null;
             var eventType = obj["eventType"]!.GetValue<string>();
             var uri = obj["uri"]!.GetValue<string>();
             Data = new EventData(data, eventType, uri);
