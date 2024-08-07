@@ -56,6 +56,8 @@ var client = Connector.CreateLcuWebsocketClient();
 Listen to events, disconnections, or reconnection messages:
 
 ```csharp
+using System; // Includes to avoid compiler errors CS1503, CS1660
+
 client.EventReceived.Subscribe(msg =>
 {
     Console.WriteLine(msg?.Data?.Uri);
