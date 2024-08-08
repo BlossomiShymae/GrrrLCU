@@ -73,15 +73,17 @@ namespace BlossomiShymae.GrrrLCU
         /// </summary>
         /// <param name="httpMethod"></param>
         /// <param name="path"></param>
+        /// <param name="httpContent"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> SendAsync(HttpMethod httpMethod, string path, CancellationToken cancellationToken = default)
+        public static async Task<HttpResponseMessage> SendAsync(HttpMethod httpMethod, string path, HttpContent? httpContent = null, CancellationToken cancellationToken = default)
         {
             var processInfo = GetProcessInfo();
             var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
 
             var request = new HttpRequestMessage(httpMethod, GetLeagueClientUri(processInfo.AppPort, path));
             request.Headers.Authorization = riotAuthentication.ToAuthenticationHeaderValue();
+            request.Content = httpContent;
                         
             var response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -96,7 +98,7 @@ namespace BlossomiShymae.GrrrLCU
         /// <returns></returns>
         public static async Task<HttpResponseMessage> GetAsync(string path, CancellationToken cancellationToken = default)
         {
-            var response = await SendAsync(HttpMethod.Get, path, cancellationToken).ConfigureAwait(false);
+            var response = await SendAsync(HttpMethod.Get, path, cancellationToken: cancellationToken).ConfigureAwait(false);
             
             return response;
         }
