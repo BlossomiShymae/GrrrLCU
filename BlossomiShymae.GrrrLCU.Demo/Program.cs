@@ -1,11 +1,12 @@
-﻿using BlossomiShymae.GrrrLCU;
+﻿using System.Text.Json;
+using BlossomiShymae.GrrrLCU;
 
 var client = Connector.CreateLcuWebsocketClient();
 
 // Subscribe to any events.
 client.EventReceived.Subscribe(msg =>
 {
-    Console.WriteLine(msg?.Data?.Uri);
+    Console.WriteLine(JsonSerializer.Serialize(msg));
 });
 client.DisconnectionHappened.Subscribe(msg => 
 {

@@ -1,18 +1,15 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace BlossomiShymae.GrrrLCU
 {
     /// <summary>
     /// Messages that are sent via the League Client websocket.
     /// </summary>
+    [JsonConverter(typeof(EventMessageConverter))]
     public class EventMessage(RequestType requestType, string kind, EventData? data = null)
     {
-        private static JsonSerializerOptions s_options =  new()
-        { 
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        };
-
         /// <summary>
         /// Documented kinds available for messages.
         /// </summary>
@@ -41,30 +38,5 @@ namespace BlossomiShymae.GrrrLCU
         /// The data contained in the event message.
         /// </summary>
         public EventData? Data { get; } = data;
-
-        /// <summary>
-        /// Get the raw JSON string of the event message.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            if (Data == null) return $"[{(int)RequestType}, \"{Kind}\"]";
-            return $"[{(int)RequestType}, \"{Kind}\", {JsonSerializer.Serialize(Data, s_options)}]";
-        }
-
-        internal EventMessage(string json) : this(new(), string.Empty)
-        {
-            var array = JsonNode.Parse(json)!
-                                .AsArray()!;
-                                
-            RequestType = JsonSerializer.Deserialize<RequestType>(array[0], s_options)!;
-            Kind = array[1]!.GetValue<string>()!;
-            
-            var obj = array[2]!.AsObject();
-            var data = obj["data"]?.DeepClone() ?? null;
-            var eventType = obj["eventType"]!.GetValue<string>();
-            var uri = obj["uri"]!.GetValue<string>();
-            Data = new EventData(data, eventType, uri);
-        }
     }
 }

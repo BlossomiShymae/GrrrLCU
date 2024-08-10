@@ -122,7 +122,9 @@ internal static class ProcessCommandLine
 	private static bool ReadStructFromProcessMemory<TStruct>(
 		IntPtr hProcess, IntPtr lpBaseAddress, out TStruct val)
 	{
+#pragma warning disable CS8601 // Possible null reference assignment.
 		val = default;
+#pragma warning restore CS8601 // Possible null reference assignment.
 		var structSize = Marshal.SizeOf<TStruct>();
 		var mem = Marshal.AllocHGlobal(structSize);
 		try
@@ -131,7 +133,9 @@ internal static class ProcessCommandLine
 				hProcess, lpBaseAddress, mem, (uint)structSize, out var len) &&
 				(len == structSize))
 			{
+#pragma warning disable CS8601 // Possible null reference assignment.
 				val = Marshal.PtrToStructure<TStruct>(mem);
+#pragma warning restore CS8601 // Possible null reference assignment.
 				return true;
 			}
 		}
@@ -163,8 +167,10 @@ internal static class ProcessCommandLine
 	public static int Retrieve(Process process, out string parameterValue, Parameter parameter = Parameter.CommandLine)
 	{
 		int rc = 0;
-		parameterValue = null;
-		var hProcess = Win32Native.OpenProcess(
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+            parameterValue = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            var hProcess = Win32Native.OpenProcess(
 			Win32Native.OpenProcessDesiredAccessFlags.PROCESS_QUERY_INFORMATION |
 			Win32Native.OpenProcessDesiredAccessFlags.PROCESS_VM_READ, false, (uint)process.Id);
 		if (hProcess != IntPtr.Zero)
@@ -199,7 +205,9 @@ internal static class ProcessCommandLine
 												unicodeString.Buffer, memCL, clLen, out len))
 											{
 												rc = 0;
+#pragma warning disable CS8603 // Possible null reference return.
 												return Marshal.PtrToStringUni(memCL);
+#pragma warning restore CS8603 // Possible null reference return.
 											}
 											else
 											{
@@ -211,7 +219,9 @@ internal static class ProcessCommandLine
 										{
 											Marshal.FreeHGlobal(memCL);
 										}
+#pragma warning disable CS8603 // Possible null reference return.
 										return null;
+#pragma warning restore CS8603 // Possible null reference return.
 									}
 
 									switch (parameter)
@@ -281,7 +291,9 @@ internal static class ProcessCommandLine
 			for (var i = 0; i < args.Length; ++i)
 			{
 				var p = Marshal.ReadIntPtr(argv, i * IntPtr.Size);
+#pragma warning disable CS8601 // Possible null reference assignment.
 				args[i] = Marshal.PtrToStringUni(p);
+#pragma warning restore CS8601 // Possible null reference assignment.
 			}
 			return args.ToList().AsReadOnly();
 		}

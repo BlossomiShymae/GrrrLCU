@@ -1,6 +1,7 @@
 using System.Net.WebSockets;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Websocket.Client;
 
@@ -22,7 +23,7 @@ namespace BlossomiShymae.GrrrLCU
         {
             MessageReceived.Subscribe(msg => 
             {
-                if (!string.IsNullOrEmpty(msg.Text)) _eventReceivedSubject.OnNext(new EventMessage(msg.Text));
+                if (!string.IsNullOrEmpty(msg.Text)) _eventReceivedSubject.OnNext(JsonSerializer.Deserialize<EventMessage>(msg.Text)!);
             });
         }
 
@@ -34,7 +35,7 @@ namespace BlossomiShymae.GrrrLCU
         /// <returns></returns>
         public bool Send(EventMessage message)
         {
-            return Send(message.ToString());
+            return Send(JsonSerializer.Serialize(message));
         }
     }
 }
