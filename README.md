@@ -12,9 +12,20 @@ This library is currently compatible with .NET 8 and higher for Windows.
   <img src="https://contrib.rocks/image?repo=BlossomiShymae/GrrrLCU" />
 </a>
 
-## Requesting the LCU
+## Usage
 
-Requesting with GrrrLCU is simple:
+### Sample application
+
+[A demonstration of GrrrLCU with more code examples can be found here.](https://github.com/BlossomiShymae/GrrrLCU/blob/main/BlossomiShymae.GrrrLCU.Demo/Program.cs)
+
+To run the demo:
+```bash
+dotnet run --project BlossomiShymae.GrrrLCU.Demo
+```
+
+### Requesting the LCU
+
+#### General request
 
 ```csharp
 var response = await Connector.SendAsync(HttpMethod.Get, "/lol-summoner/v1/current-summoner");
@@ -22,28 +33,28 @@ var response = await Connector.SendAsync(HttpMethod.Get, "/lol-summoner/v1/curre
 var me = await response.Content.ReadFromJsonAsync<Summoner>();
 ```
 
-Simpler for GET requests:
-
-```csharp
-var response = await Connector.GetAsync("/lol-summoner/v1/current-summoner");
-
-var me = await response.Content.ReadFromJsonAsync<Summoner>();
-```
-
-Simplest for GET requests:
+#### GET request
 
 ```csharp
 var me = await Connector.GetFromJsonAsync<Summoner>("/lol-summoner/v1/current-summoner");
 ```
 
-Utilities:
+#### POST request with body
+
+```csharp
+var response = await Connector.SendAsync(HttpMethod.Post, "/player-notifications/v1/notifications", new JsonContent(playerNotificationResource));
+
+var resource = await response.Content.ReadFromJsonAsync<PlayerNotificationResource>();
+```
+
+#### Utilities
 
 ```csharp
 var processInfo = Connector.GetProcessInfo();
 var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
 ```
 
-## WebSockets
+### WebSockets
 
 This library uses the `Websocket.Client` wrapper, which comes with built-in reconnection and error handling.
 
