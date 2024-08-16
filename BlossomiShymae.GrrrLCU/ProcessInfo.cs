@@ -42,7 +42,7 @@ namespace BlossomiShymae.GrrrLCU
             } 
             else
             { 
-                throw new InvalidOperationException("Failed to retrieve process command line."); 
+                throw new InvalidOperationException(ProcessCommandLine.ErrorToString(rc)); 
             }
         }
     }
