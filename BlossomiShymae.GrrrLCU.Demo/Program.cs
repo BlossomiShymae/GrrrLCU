@@ -1,5 +1,7 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using BlossomiShymae.GrrrLCU;
 using Spectre.Console;
 using Spectre.Console.Json;
@@ -63,6 +65,20 @@ public class Controller
         AnsiConsole.Write(summonerPanel);
         AnsiConsole.Write(userResourcePanel);
         AnsiConsole.Write(table);
+
+        var playerNotificationResource = new PlayerNotificationResource()
+        {
+            TitleKey = "pre_translated_title",
+            DetailKey = "pre_translated_details",
+            Data = new
+            {
+                Title = "GrrrLCU",
+                Details = "This is a test notification from GrrrLCU."
+            }
+        };
+        await Connector.SendAsync(HttpMethod.Post, "/player-notifications/v1/notifications", JsonContent.Create(playerNotificationResource));
+
+        AnsiConsole.Markup("[yellow]A test notification was sent to the LCU client. Check it out.[/]\n");
 
         var client = Connector.CreateLcuWebsocketClient();
 
@@ -171,6 +187,23 @@ class ChampionMastery
     public int ChampionId { get; set;}
     public int ChampionLevel { get; set; }
     public int ChampionPoints { get; set; }
+}
+
+class PlayerNotificationResource
+{
+    public string BackgroundUrl { get; set; } = string.Empty;
+    public string Created { get; set; } = string.Empty;
+    public bool Critical { get; set; }
+    public object Data { get; set; } = new { };
+    public string DetailKey { get; set; } = string.Empty;
+    public string Expires { get; set; } = string.Empty;
+    public string IconUrl { get; set; } =  string.Empty;
+    public ulong Id { get; set; }
+    public string Source { get; set; } = string.Empty;
+    public string State { get; set; } = string.Empty;
+    public string TitleKey { get; set; } = string.Empty;
+    public string Type { get; set; } = string.Empty;
+    public bool Dismissable { get; set; } 
 }
 
 class ChampionSummary
