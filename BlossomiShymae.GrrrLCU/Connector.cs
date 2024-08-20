@@ -31,7 +31,7 @@ namespace BlossomiShymae.GrrrLCU
         {
             ProcessInfo? processInfo = null;
 
-            foreach (var process in Process.GetProcesses())
+            foreach (var process in Process.GetProcessesByName("LeagueClientUx"))
             {
                 switch(process.ProcessName)
                 {

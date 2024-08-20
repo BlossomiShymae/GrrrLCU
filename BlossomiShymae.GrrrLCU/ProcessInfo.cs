@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BlossomiShymae.GrrrLCU
 {
@@ -33,15 +34,15 @@ namespace BlossomiShymae.GrrrLCU
             }
             else
             {
-                throw new AggregateException("Unable to obtain process information.", [commandException!, lockException!]);
+                throw new AggregateException("Unable to obtain process information.", [commandException, lockException]);
             }
         }
 
-        private bool TryGetLockfile(Process process, out string token, out int port, out Exception? ex)
+        private bool TryGetLockfile(Process process, out string token, out int port, [NotNullWhen(false)] out Exception? ex)
         {
             try
             {
-                var path = Directory.GetParent(process.MainModule!.FileName)!.FullName;
+                var path = Path.GetDirectoryName(process.MainModule!.FileName.AsSpan());
                 var lockfilePath = Path.Join(path, "lockfile");
 
                 using var lockfileStream = File.Open(lockfilePath, FileMode.Open, FileAccess.Read, FileShare.Write);
@@ -64,7 +65,7 @@ namespace BlossomiShymae.GrrrLCU
             }
         }
 
-        private bool TryGetCommandLineArguments(Process process, out string remotingAuthToken, out int appPort, out Exception? ex)
+        private bool TryGetCommandLineArguments(Process process, out string remotingAuthToken, out int appPort, [NotNullWhen(false)] out Exception? ex)
         {
             try
             {
