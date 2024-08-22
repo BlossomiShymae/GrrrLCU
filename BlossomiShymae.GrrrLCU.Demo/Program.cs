@@ -1,49 +1,92 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
+using System.Timers;
 using BlossomiShymae.GrrrLCU;
 using Spectre.Console;
 using Spectre.Console.Json;
 using Websocket.Client;
+using Timer = System.Timers.Timer;
 
-try
-{
-    var httpClient = new HttpClient();
-    var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, WriteIndented = true};
+var lcuHttpClient = Connector.GetLcuHttpClientInstance();
+var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, WriteIndented = true};
 
-    var controller = new Controller(httpClient, jsonSerializerOptions);
-    await controller.StartAsync();
-} 
-catch (InvalidOperationException ex)
+var controller = new Controller(lcuHttpClient, jsonSerializerOptions);
+
+var connectionTimer = new Timer(TimeSpan.FromSeconds(5));
+
+connectionTimer.Elapsed += OnElapsed;
+connectionTimer.Enabled = true;
+connectionTimer.Start();
+
+while (controller.IsRunning) await Task.Delay(TimeSpan.FromSeconds(1));
+
+
+async void OnElapsed(object? sender, ElapsedEventArgs elapsedEventArgs)
 {
-    if (ex.Message.Contains("LCUx"))
+    Console.WriteLine("Finding LCUx process...");
+    if (ProcessFinder.IsPortOpen())
     {
-        Console.WriteLine("This demo must have the LCU running.");
-    }
-    else
-    {
-        throw;
+        Console.WriteLine("Connecting to LCUx process...");
+        connectionTimer.Elapsed -= OnElapsed;
+        connectionTimer.Stop();
+        connectionTimer.Dispose();
+
+        await controller.StartAsync();   
     }
 }
 
-public class Controller
+public class Controller(LcuHttpClient lcuHttpClient, JsonSerializerOptions jsonSerializerOptions)
 {
-    public HttpClient HttpClient { get; }
-    public JsonSerializerOptions JsonSerializerOptions { get; }
-
-    public Controller(HttpClient httpClient, JsonSerializerOptions jsonSerializerOptions)
-    {
-        HttpClient = httpClient;
-        JsonSerializerOptions = jsonSerializerOptions;
-    }
+    public LcuHttpClient LcuHttpClient { get; } = lcuHttpClient;
+    public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
+    public LcuWebsocketClient? LcuWebsocketClient { get; set; }
+    public bool IsRunning { get; set; } = true;
 
     public async Task StartAsync()
     {
-        var summoner = await GetSummonerAsync();
-        var userResource = await GetUserResourceAsync();
-        var championMasteries = (await GetChampionMasteriesAsync()).GetRange(0, 3);
-        var championSummaries = await GetChampionSummariesAsync();
+        var summoner = new Summoner();
+        int retries = 3;
+        // We must have retry logic here for GET /lol-summoner/v1/current-summoner as
+        // it will return a 404 when connected too early...
+        for (int i = 0; i < retries; i++)
+        {
+            var res = await LcuHttpClient.GetAsync("/lol-summoner/v1/current-summoner")
+                ?? throw new Exception("Failed to get summoner");
+
+            if (res.IsSuccessStatusCode)
+            {
+                summoner = await res.Content.ReadFromJsonAsync<Summoner>()
+                    ?? throw new Exception("Failed to get summoner");
+                break;
+            }
+            
+            if (i == retries - 1) throw new Exception("Failed to connect to LCUx process...");
+
+            var delay = TimeSpan.FromSeconds(Math.Pow(2, i));
+            Console.WriteLine($"Backing off for {delay.TotalSeconds} second(s)...");
+            await Task.Delay(delay);
+        }
+
+        var userResource = await LcuHttpClient.GetFromJsonAsync<UserResource>("/lol-chat/v1/me")
+            ?? throw new Exception("Failed to get user resource");
+        var championMasteries = (await LcuHttpClient.GetFromJsonAsync<List<ChampionMastery>>("/lol-champion-mastery/v1/local-player/champion-mastery")
+            ?? throw new Exception("Failed to get champion masteries")).GetRange(0, 3);
+        var championSummaries = await LcuHttpClient.GetFromJsonAsync<List<ChampionSummary>>("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json", JsonSerializerOptions)
+            ?? throw new Exception("Failed to get champion summaries");
+
+        var playerNotificationResource = new PlayerNotificationResource()
+        {
+            TitleKey = "pre_translated_title",
+            DetailKey = "pre_translated_details",
+            Data = new
+            {
+                Title = "GrrrLCU",
+                Details = "This is a test notification from GrrrLCU."
+            }
+        };
+        await LcuHttpClient.PostAsJsonAsync("/player-notifications/v1/notifications", playerNotificationResource);
+
+        AnsiConsole.Markup("[yellow]A test notification was sent to the LCU client. Check it out.[/]\n");
 
         var summonerPanel = new Panel(summoner.ToString())
         {
@@ -59,45 +102,28 @@ public class Controller
         table.AddColumn("Name");
         table.AddColumn("Level");
         table.AddColumn("Points");
-        foreach (var mastery in championMasteries) 
+        foreach (var mastery in championMasteries)
             table.AddRow(championSummaries.Find(s => s.Id == mastery.ChampionId)!.Name, $"{mastery.ChampionLevel}", $"{mastery.ChampionPoints}");
 
         AnsiConsole.Write(summonerPanel);
         AnsiConsole.Write(userResourcePanel);
         AnsiConsole.Write(table);
 
-        var playerNotificationResource = new PlayerNotificationResource()
-        {
-            TitleKey = "pre_translated_title",
-            DetailKey = "pre_translated_details",
-            Data = new
-            {
-                Title = "GrrrLCU",
-                Details = "This is a test notification from GrrrLCU."
-            }
-        };
-        await Connector.SendAsync(HttpMethod.Post, "/player-notifications/v1/notifications", JsonContent.Create(playerNotificationResource));
+        await InitializeWebsocketAsync();
+    }
 
-        AnsiConsole.Markup("[yellow]A test notification was sent to the LCU client. Check it out.[/]\n");
+    private async Task InitializeWebsocketAsync()
+    {
+        var client = LcuWebsocketClient = Connector.CreateLcuWebsocketClient();
 
-        var client = Connector.CreateLcuWebsocketClient();
-
-        // Subscribe to any events.
         client.EventReceived.Subscribe(Client_EventReceived);
         client.DisconnectionHappened.Subscribe(Client_DisconnectionHappened);
         client.ReconnectionHappened.Subscribe(Client_ReconnectionHappened);
 
-        // This starts the client in a background thread. You will need an event loop
-        // to listen to messages.
         await client.Start();
 
-        // Subscribe to every event that the League Client sends.
         var message = new EventMessage(RequestType.Subscribe, EventMessage.Kinds.OnJsonApiEvent);
         client.Send(message);
-
-        // We will need an event loop for the background thread to process.
-        // You may close at any time with Ctrl+C or similar chord.
-        while(true) await Task.Delay(TimeSpan.FromSeconds(1));
     }
 
     private void Client_ReconnectionHappened(ReconnectionInfo info)
@@ -107,7 +133,9 @@ public class Controller
 
     private void Client_DisconnectionHappened(DisconnectionInfo info)
     {
-        if (info.Exception != null) throw info.Exception;
+       LcuWebsocketClient?.Dispose();
+       Console.WriteLine("Disconecting from LCUx process...");
+       IsRunning = false;
     }
 
     private void Client_EventReceived(EventMessage message)
@@ -117,30 +145,6 @@ public class Controller
             Header = new PanelHeader("EventMessage"),
         };
         AnsiConsole.Write(jsonPanel);
-    }
-
-    private async Task<Summoner> GetSummonerAsync()
-    {
-        var summoner = await Connector.GetFromJsonAsync<Summoner>("/lol-summoner/v1/current-summoner");
-        return summoner ?? throw new NullReferenceException("Summoner is null");
-    }
-
-    private async Task<UserResource> GetUserResourceAsync()
-    {
-        var userResource = await Connector.GetFromJsonAsync<UserResource>("/lol-chat/v1/me");
-        return userResource ?? throw new NullReferenceException("User resource is null");
-    }
-
-    private async Task<List<ChampionMastery>> GetChampionMasteriesAsync()
-    {
-        var championMasteries = await Connector.GetFromJsonAsync<List<ChampionMastery>>("/lol-champion-mastery/v1/local-player/champion-mastery");
-        return championMasteries ?? throw new NullReferenceException("Champion masteries is null");
-    }
-
-    private async Task<List<ChampionSummary>> GetChampionSummariesAsync()
-    {
-        var championSummaries = await HttpClient.GetFromJsonAsync<List<ChampionSummary>>("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json", JsonSerializerOptions);
-        return championSummaries ?? throw new NullReferenceException("Champion summaries is null");
     }
 }
 
@@ -210,4 +214,9 @@ class ChampionSummary
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
+}
+
+class Status
+{
+    public bool Ready { get; set; }
 }
