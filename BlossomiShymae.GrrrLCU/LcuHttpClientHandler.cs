@@ -104,17 +104,8 @@ namespace BlossomiShymae.GrrrLCU
             {
                 request.RequestUri = new Uri($"{request.RequestUri?.ToString().Replace("https://127.0.0.1", BaseAddress)}");
                 
-                try
-                {   
-                    using var tcpClient = new TcpClient();
-                    tcpClient.Connect("127.0.0.1", ProcessInfo!.AppPort);
-                    tcpClient.Close();
-                }
-                catch (Exception)
-                {
+                if (!ProcessFinder.IsPortOpen()) 
                     throw new InvalidOperationException("Failed to connect to LCUx process port.");
-                }
-                
             }
             request.Headers.Authorization = RiotAuthentication?.ToAuthenticationHeaderValue();
         }
