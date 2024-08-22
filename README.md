@@ -25,10 +25,22 @@ dotnet run --project BlossomiShymae.GrrrLCU.Demo
 
 ### Requesting the LCU
 
+This library uses the `System.Net.Http.HttpClient` interface via `LcuHttpClient`. It comes with a built-in handler that takes care of the request path and authorization header.
+
+> [!NOTE]
+> The built-in handler will attempt to refresh the port and auth if a `HttpRequestException` is encountered **on request**. `InvalidOperationException` will be thrown if the port of the current LCU process cannot be found or the port cannot be connected to.
+
+
+#### Getting the LcuHttpClient instance
+
+```csharp
+var client = Connector.GetLcuHttpClientInstance();
+```
+
 #### General request
 
 ```csharp
-var response = await Connector.SendAsync(HttpMethod.Get, "/lol-summoner/v1/current-summoner");
+var response = await client.SendAsync(new(HttpMethod.Get, "/lol-summoner/v1/current-summoner"));
 
 var me = await response.Content.ReadFromJsonAsync<Summoner>();
 ```
@@ -36,27 +48,34 @@ var me = await response.Content.ReadFromJsonAsync<Summoner>();
 #### GET request
 
 ```csharp
-var me = await Connector.GetFromJsonAsync<Summoner>("/lol-summoner/v1/current-summoner");
+var me = await client.GetFromJsonAsync<Summoner>("/lol-summoner/v1/current-summoner");
 ```
 
-#### POST request with body
+#### POST request with JSON body
 
 ```csharp
-var response = await Connector.SendAsync(HttpMethod.Post, "/player-notifications/v1/notifications", new JsonContent(playerNotificationResource));
+var response = await client.PostAsJsonAsync("/player-notifications/v1/notifications", playerNotificationResource);
 
 var resource = await response.Content.ReadFromJsonAsync<PlayerNotificationResource>();
 ```
 
+> [!WARNING]
+> `ProcessFinder.IsActive()` does not necessarily mean that the LCU process port is open for requests.
+
 #### Utilities
 
 ```csharp
-var processInfo = Connector.GetProcessInfo();
+var processInfo = ProcessFinder.Get();
+var isActive = ProcessFinder.IsActive();
+var isPortOpen = ProcessFinder.IsPortOpen();
+
 var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
+
 ```
 
 ### WebSockets
 
-This library uses the `Websocket.Client` wrapper, which comes with built-in reconnection and error handling.
+This library uses the `Websocket.Client` wrapper.
 
 Create a client:
 
@@ -67,8 +86,8 @@ var client = Connector.CreateLcuWebsocketClient();
 Listen to events, disconnections, or reconnection messages:
 
 ```csharp
-using System; // Include to avoid compiler errors CS1503, CS1660
-              // You may or may not need this
+using System; // Include to avoid compiler errors CS1503, CS1660.
+              // You may or may not need this.
 
 client.EventReceived.Subscribe(msg =>
 {
@@ -96,6 +115,5 @@ var message = new EventMessage(RequestType.Subscribe, EventMessage.Kinds.OnJsonA
 client.Send(message);
 
 // We will need an event loop for the background thread to process.
-// You may close at any time with Ctrl+C or similar chord.
 while(true) await Task.Delay(TimeSpan.FromSeconds(1));
 ```
