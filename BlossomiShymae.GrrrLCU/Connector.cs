@@ -1,7 +1,4 @@
-using System.Diagnostics;
-using System.Net.Http.Json;
 using System.Net.WebSockets;
-using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
 

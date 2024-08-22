@@ -1,5 +1,3 @@
-using System.Net.Sockets;
-
 namespace BlossomiShymae.GrrrLCU
 {
     internal class LcuHttpClientHandler : HttpClientHandler
