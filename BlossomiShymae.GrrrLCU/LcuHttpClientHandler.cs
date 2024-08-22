@@ -1,6 +1,4 @@
 using System.Net.Sockets;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 
 namespace BlossomiShymae.GrrrLCU
 {
@@ -18,38 +16,10 @@ namespace BlossomiShymae.GrrrLCU
 
         private Lazy<bool> _isFailing = new(() => false);
 
-        private X509Certificate2 _certificate;
 
         internal LcuHttpClientHandler() : base()
         {
-            _certificate = GetCertificate();
-
-            ServerCertificateCustomValidationCallback = (_, certificate2, _, _) =>
-            {
-                var chain = new X509Chain();
-                chain.ChainPolicy.ExtraStore.Add(_certificate);
-                chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
-                chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
-
-                var isValid = certificate2 != null && chain.Build(certificate2);
-                var chainRoot = chain.ChainElements[^1].Certificate;
-
-                isValid = isValid && chainRoot.RawData.SequenceEqual(_certificate.RawData);
-
-                return isValid;
-            };
-        }
-
-        private static X509Certificate2 GetCertificate()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "BlossomiShymae.GrrrLCU.Assets.riotgames.pem";
-
-            var stream = assembly.GetManifestResourceStream(resourceName);
-            var memoryStream = new MemoryStream();
-            stream!.CopyTo(memoryStream);
-
-            return new X509Certificate2(memoryStream.ToArray());
+            ServerCertificateCustomValidationCallback = DangerousAcceptAnyServerCertificateValidator;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
