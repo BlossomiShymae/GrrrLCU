@@ -5,7 +5,7 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// Messages that are sent via the League Client websocket.
     /// </summary>
-    [JsonConverter(typeof(EventMessageConverter))]
+    [JsonConverter(typeof(EventMessageJsonConverter))]
     public class EventMessage(RequestType requestType, string kind, EventData? data = null)
     {
         /// <summary>

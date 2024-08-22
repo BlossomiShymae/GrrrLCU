@@ -3,8 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace BlossomiShymae.GrrrLCU
 {
-    internal class EventMessageConverter : JsonConverter<EventMessage>
+    internal class EventMessageJsonConverter : JsonConverter<EventMessage>
     {
+        internal static JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
         public override EventMessage? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartArray) throw new JsonException();
@@ -22,7 +24,7 @@ namespace BlossomiShymae.GrrrLCU
 
                 if (reader.TokenType == JsonTokenType.Number)
                 {
-                    requestType = JsonSerializer.Deserialize<RequestType>(ref reader, Connector.JsonSerializerOptions);
+                    requestType = JsonSerializer.Deserialize<RequestType>(ref reader, JsonSerializerOptions);
                 }
 
                 if (reader.TokenType == JsonTokenType.String)
@@ -32,7 +34,7 @@ namespace BlossomiShymae.GrrrLCU
 
                 if (reader.TokenType == JsonTokenType.StartObject)
                 {
-                    eventData = JsonSerializer.Deserialize<EventData>(ref reader, Connector.JsonSerializerOptions);
+                    eventData = JsonSerializer.Deserialize<EventData>(ref reader, JsonSerializerOptions);
                 }
             }
 
