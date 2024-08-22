@@ -72,7 +72,7 @@ namespace BlossomiShymae.GrrrLCU
                 return true;
                 
             }
-            catch (InvalidOperationException)
+            catch (Exception e) when (e is InvalidOperationException || e is SocketException)
             {
                 return false;
             }
