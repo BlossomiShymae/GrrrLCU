@@ -14,7 +14,6 @@ namespace BlossomiShymae.GrrrLCU
 
         private Lazy<bool> _isFailing = new(() => false);
 
-
         internal LcuHttpClientHandler() : base()
         {
             ServerCertificateCustomValidationCallback = DangerousAcceptAnyServerCertificateValidator;
@@ -26,13 +25,13 @@ namespace BlossomiShymae.GrrrLCU
             {
                 if (_isFirstRequest.Value)
                 {
-                    _isFirstRequest = new(() => true);
-                    ProcessInfo = ProcessFinder.Get();
+                    _isFirstRequest = new(() => false);
+                    SetProcessInfo();
                 }
                 if (_isFailing.Value)
                 {
                     _isFailing = new(() => false);
-                    ProcessInfo = ProcessFinder.Get();
+                    SetProcessInfo();
                 }
 
                 PrepareRequestMessage(request);
@@ -40,11 +39,16 @@ namespace BlossomiShymae.GrrrLCU
 
                 return response;
             }
+            catch (InvalidOperationException)
+            {
+                _isFailing = new(() => true);
+                throw;
+            }
             catch (HttpRequestException)
             {
                 try
                 {
-                    ProcessInfo = ProcessFinder.Get();
+                    SetProcessInfo();
 
                     PrepareRequestMessage(request);
                     var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
@@ -65,24 +69,29 @@ namespace BlossomiShymae.GrrrLCU
             {
                 if (_isFirstRequest.Value)
                 {
-                    _isFirstRequest = new(() => true);
-                    ProcessInfo = ProcessFinder.Get();
+                    _isFirstRequest = new(() => false);
+                    SetProcessInfo();
                 }
                 if (_isFailing.Value)
                 {
                     _isFailing = new(() => false);
-                    ProcessInfo = ProcessFinder.Get();
+                    SetProcessInfo();
                 }
 
                 PrepareRequestMessage(request);
 
                 return base.Send(request, cancellationToken);
             }
+            catch (InvalidOperationException)
+            {
+                _isFailing = new(() => true);
+                throw;
+            }
             catch (HttpRequestException)
             {
                 try
                 {
-                    ProcessInfo = ProcessFinder.Get();
+                    SetProcessInfo();
 
                     PrepareRequestMessage(request);
 
@@ -96,14 +105,18 @@ namespace BlossomiShymae.GrrrLCU
             }
         }
 
+        private void SetProcessInfo()
+        {
+            ProcessInfo = ProcessFinder.Get();
+            if (!ProcessFinder.IsPortOpen(ProcessInfo))
+                throw new InvalidOperationException("Failed to connect to LCUx process port.");
+        }
+
         private void PrepareRequestMessage(HttpRequestMessage request)
         {       
             if (BaseAddress != null)
             {
                 request.RequestUri = new Uri($"{request.RequestUri?.ToString().Replace("https://127.0.0.1", BaseAddress)}");
-                
-                if (!ProcessFinder.IsPortOpen()) 
-                    throw new InvalidOperationException("Failed to connect to LCUx process port.");
             }
             request.Headers.Authorization = RiotAuthentication?.ToAuthenticationHeaderValue();
         }
