@@ -15,7 +15,7 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>lcu;lcuapi;leagueoflegends;lol</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
-    <Version>0.12.0</Version>
+    <Version>0.13.0</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Title>GrrrLCU</Title>
   </PropertyGroup>
