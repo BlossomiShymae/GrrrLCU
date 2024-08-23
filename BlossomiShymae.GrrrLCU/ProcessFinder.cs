@@ -37,7 +37,7 @@ namespace BlossomiShymae.GrrrLCU
         /// <summary>
         /// Get the current process status of the League Client. This does not 
         /// necessarily mean that the League Client can be connected to.
-        /// In that case, use <see cref="IsPortOpen"/>.
+        /// In that case, use <see cref="IsPortOpen()"/>.
         /// </summary>
         /// <returns></returns>
         public static bool IsActive()
@@ -62,13 +62,29 @@ namespace BlossomiShymae.GrrrLCU
             try
             {
                 var processInfo = Get();
+                return IsPortOpen(processInfo);
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Get the current port status of the League Client process.
+        /// </summary>
+        /// <param name="processInfo"></param>
+        /// <returns></returns>
+        public static bool IsPortOpen(ProcessInfo processInfo)
+        {
+            try
+            {
                 using var tcpClient = new TcpClient();
                 tcpClient.Connect("127.0.0.1", processInfo.AppPort);
                 tcpClient.Close();
                 return true;
-                
             }
-            catch (Exception e) when (e is InvalidOperationException || e is SocketException)
+            catch (SocketException)
             {
                 return false;
             }
