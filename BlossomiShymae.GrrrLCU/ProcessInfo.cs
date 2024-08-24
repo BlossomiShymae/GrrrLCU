@@ -22,19 +22,26 @@ namespace BlossomiShymae.GrrrLCU
 
         internal ProcessInfo(Process process)
         {
-            if (TryGetCommandLineArguments(process, out var token, out var port, out var commandException))
+            // Fastest, more intrusive
+            if (TryGetCommandLineArgumentsByWin32Native(process, out var t_native, out var ap_native, out var nativeException))
             {
-                RemotingAuthToken = token;
-                AppPort = port;
+                RemotingAuthToken = t_native;
+                AppPort = ap_native;
             }
-            else if (TryGetLockfile(process, out var _token, out var _port, out var lockException))
+            else if (TryGetLockfile(process, out var t_lock, out var ap_lock, out var lockException))
             {
-                RemotingAuthToken = _token;
-                AppPort = _port;
+                RemotingAuthToken = t_lock;
+                AppPort = ap_lock;
+            }
+            // Slowest, least intrusive
+            else if (TryGetCommandLineArgumentsByWMI(process, out var t_wmi, out var ap_wmi, out var commandException))
+            {
+                RemotingAuthToken = t_wmi;
+                AppPort = ap_wmi;
             }
             else
             {
-                throw new AggregateException("Unable to obtain process information.", [commandException, lockException]);
+                throw new AggregateException("Unable to obtain process information.", [nativeException, lockException, commandException]);
             }
         }
 
@@ -65,7 +72,7 @@ namespace BlossomiShymae.GrrrLCU
             }
         }
 
-        private bool TryGetCommandLineArguments(Process process, out string remotingAuthToken, out int appPort, [NotNullWhen(false)] out Exception? ex)
+        private bool TryGetCommandLineArgumentsByWMI(Process process, out string remotingAuthToken, out int appPort, [NotNullWhen(false)] out Exception? ex)
         {
             try
             {
@@ -93,6 +100,44 @@ namespace BlossomiShymae.GrrrLCU
                 remotingAuthToken = string.Empty;
                 appPort = 0;
                 ex = e;
+                _args.Clear();
+                return false;
+            }
+        }
+
+        private bool TryGetCommandLineArgumentsByWin32Native(Process process, out string remotingAuthToken, out int appPort, [NotNullWhen(false)] out Exception? ex)
+        {
+            try
+            {
+                var rc = ProcessCommandLine.Retrieve(process, out var cl);
+                if (rc == 0)
+                {
+                    var args = ProcessCommandLine.CommandLineToArgs(cl);
+                    foreach (var arg in args)
+                    {
+                        if (arg.Length > 0 && arg.Contains('='))
+                        {
+                            var split = arg[2..].Split("=");
+                            var key = split[0];
+                            var value = split[1];
+
+                            _args[key] = value;
+                        }
+                    }
+
+                    remotingAuthToken = _args["remoting-auth-token"];
+                    appPort = int.Parse(_args["app-port"]);
+                    ex = null;
+                    return true;
+                } 
+                else throw new InvalidOperationException(ProcessCommandLine.ErrorToString(rc)); 
+            }
+            catch (Exception e)
+            {
+                remotingAuthToken = string.Empty;
+                appPort = 0;
+                ex = e ;
+                _args.Clear();
                 return false;
             }
         }
