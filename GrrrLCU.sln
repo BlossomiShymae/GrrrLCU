@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.GrrrLCU.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.GrrrLCU.Demo", "BlossomiShymae.GrrrLCU.Demo\BlossomiShymae.GrrrLCU.Demo.csproj", "{A7375424-B36D-4E85-BEFD-22050086C03B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.GrrrLCU.Benchmarks", "BlossomiShymae.GrrrLCU.Benchmarks\BlossomiShymae.GrrrLCU.Benchmarks.csproj", "{731FF271-0272-464E-B8F6-BA17BAE942AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{A7375424-B36D-4E85-BEFD-22050086C03B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7375424-B36D-4E85-BEFD-22050086C03B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7375424-B36D-4E85-BEFD-22050086C03B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731FF271-0272-464E-B8F6-BA17BAE942AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731FF271-0272-464E-B8F6-BA17BAE942AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731FF271-0272-464E-B8F6-BA17BAE942AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731FF271-0272-464E-B8F6-BA17BAE942AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
