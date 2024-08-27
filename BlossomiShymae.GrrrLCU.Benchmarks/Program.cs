@@ -4,23 +4,23 @@ using BenchmarkDotNet.Running;
 
 namespace BlossomiShymae.GrrrLCU.Benchmarks;
 
-public class LcuArguments
+public class PortToken
 {
     private readonly Process _process;
 
-    public LcuArguments()
+    public PortToken()
     {
         _process = Process.GetProcessesByName("LeagueClientUx").First();
     }
 
     [Benchmark]
-    public bool ArgsByWin32Native() => ProcessInfo.TryGetCommandLineArgumentsByWin32Native(_process, out var _, out var _, out var _);
+    public bool WithWin32Native() => new PortTokenWithWin32Native().TryGet(_process, out var _, out var _, out var _);
 
     [Benchmark]
-    public bool ArgsByLockfile() => ProcessInfo.TryGetLockfileArguments(_process, out var _, out var _, out var _);
+    public bool WithLockfile() => new PortTokenWithLockfile().TryGet(_process, out var _, out var _, out var _);
 
     [Benchmark]
-    public bool ArgsByGapotechnko() => ProcessInfo.TryGetCommandLineArgumentsByGapotechnko(_process, out var _, out var _, out var _);
+    public bool WithGapotechnko() => new PortTokenWithGapotechnko().TryGet(_process, out var _, out var _, out var _);
 
 }
 
@@ -28,6 +28,6 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        BenchmarkRunner.Run<LcuArguments>();
+        BenchmarkRunner.Run<PortToken>();
     }
 }
