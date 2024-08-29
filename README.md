@@ -2,6 +2,8 @@
 
 [![NuGet Stable](https://img.shields.io/nuget/v/BlossomiShymae.GrrrLCU.svg?style=flat-square&logo=nuget&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.GrrrLCU/) [![NuGet Downloads](https://img.shields.io/nuget/dt/BlossomiShymae.GrrrLCU?style=flat-square&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.GrrrLCU/)
 
+<img src="./logo.png" width="400">
+
 GrrrLCU is a wrapper for the LCU API which is unofficially provided by Riot Games.
 
 This library is currently compatible with .NET 8 and higher for Windows.
