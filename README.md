@@ -16,11 +16,19 @@ This library is currently compatible with .NET 8 and higher for Windows.
 
 ## Usage
 
+### Installation
+
+Grrr, GRRR. x3
+
+```bash
+dotnet install BlossomiShymae.GrrrLCU
+```
+
 ### Sample application
 
 [A demonstration of GrrrLCU with more code examples can be found here.](https://github.com/BlossomiShymae/GrrrLCU/blob/main/BlossomiShymae.GrrrLCU.Demo/Program.cs)
 
-To run the demo:
+To run the demo, clone the repo and then do:
 ```bash
 dotnet run --project BlossomiShymae.GrrrLCU.Demo
 ```
@@ -120,7 +128,8 @@ client.Send(message);
 while(true) await Task.Delay(TimeSpan.FromSeconds(1));
 ```
 
-Whenever a public application is made with GrrrLCU, graceful reconnection is needed as the end-user may restart, exit, or open the League client. The built-in reconnection handler will not be enough for this case.
+> [!WARNING]
+> Whenever a public application is made with GrrrLCU, graceful reconnection is needed as the end-user may restart, exit, or open the League client. The built-in reconnection handler will not be enough for this case.
 
 An example pattern using threads is provided to show how reconnection can be done.
 
