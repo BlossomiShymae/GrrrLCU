@@ -60,17 +60,17 @@ var resource = await response.Content.ReadFromJsonAsync<PlayerNotificationResour
 ```
 
 > [!WARNING]
-> `ProcessFinder.IsActive()` does not necessarily mean that the LCU process port is open for requests.
+> `ProcessFinder.IsActive()` does not necessarily mean that the LCU process port is open for requests. Use `ProcessFinder.IsPortOpen()` instead.
 
 #### Utilities
 
 ```csharp
-var processInfo = ProcessFinder.Get();
+var leagueClientProcess = ProcessFinder.GetProcess();
+var processInfo = ProcessFinder.GetProcessInfo();
 var isActive = ProcessFinder.IsActive();
 var isPortOpen = ProcessFinder.IsPortOpen();
 
 var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
-
 ```
 
 ### WebSockets
@@ -111,9 +111,50 @@ Use it:
 await client.Start();
 
 // Subscribe to every event that the League Client sends.
-var message = new EventMessage(RequestType.Subscribe, EventMessage.Kinds.OnJsonApiEvent);
+var message = new EventMessage(EventRequestType.Subscribe, EventKinds.OnJsonApiEvent);
 client.Send(message);
 
 // We will need an event loop for the background thread to process.
 while(true) await Task.Delay(TimeSpan.FromSeconds(1));
+```
+
+Whenever a public application is made with GrrrLCU, graceful reconnection is needed as the end-user may restart, exit, or open the League client. The built-in reconnection handler will not be enough for this case.
+
+An example pattern using threads is provided to show how reconnection can be done.
+
+```csharp
+public class ExampleViewModel
+{
+	public WebsocketClient? Client { get; set; }
+
+	public ExampleViewModel()
+	{
+		new Thread(InitializeWebsocket) { IsBackground = true }.Start();
+	}
+
+	private void InitializeWebsocket()
+	{
+		while (true)
+		{
+			try
+			{
+				var client = Connector.CreateLcuWebsocketClient();
+				client.DisconnectionHappened.Subscribe(OnDisconnection);
+
+				client.Start();
+				client.Send(new EventMessage(EventRequestType.Subscribe, EventKinds.OnJsonApiEvent));
+				Client = client;
+				return;
+			}
+			catch (Exception) { }
+			Thread.Sleep(TimeSpan.FromSeconds(5));
+		}
+	}
+
+	private void OnDisconnection(DisconnectionInfo info)
+	{
+		Client?.Dispose();
+		new Thread(InitializeWebsocket) { IsBackground = true }.Start();
+	}
+}
 ```
