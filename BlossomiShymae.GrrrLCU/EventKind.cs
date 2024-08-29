@@ -10,7 +10,7 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// The kind of an event message including prefix and path.
     /// </summary>
-    [JsonConverter(typeof(EventMessageJsonConverter))]
+    [JsonConverter(typeof(EventKindJsonConverter))]
     public record EventKind
     {
         /// <summary>
