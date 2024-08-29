@@ -122,7 +122,7 @@ public class Controller(LcuHttpClient lcuHttpClient, JsonSerializerOptions jsonS
 
         await client.Start();
 
-        var message = new EventMessage(RequestType.Subscribe, EventMessage.Kinds.OnJsonApiEvent);
+        var message = new EventMessage(EventRequestType.Subscribe, EventKinds.OnJsonApiEvent);
         client.Send(message);
     }
 

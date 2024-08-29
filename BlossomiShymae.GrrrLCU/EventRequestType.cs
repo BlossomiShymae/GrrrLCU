@@ -3,7 +3,7 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// The websocket operations available in a event message.
     /// </summary>
-    public enum RequestType
+    public enum EventRequestType
     {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         Welcome = 0,
