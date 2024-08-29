@@ -17,7 +17,7 @@ namespace BlossomiShymae.GrrrLCU
         /// <returns></returns>
         public static LcuWebsocketClient CreateLcuWebsocketClient(ILogger<WebsocketClient>? logger)
         {
-            var processInfo = ProcessFinder.Get();
+            var processInfo = ProcessFinder.GetProcessInfo();
             var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
             var uri = new Uri($"wss://127.0.0.1:{processInfo.AppPort}/");
             ClientWebSocket factory() => new()

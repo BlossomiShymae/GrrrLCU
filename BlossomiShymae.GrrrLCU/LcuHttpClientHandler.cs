@@ -107,7 +107,7 @@ namespace BlossomiShymae.GrrrLCU
 
         private void SetProcessInfo()
         {
-            ProcessInfo = ProcessFinder.Get();
+            ProcessInfo = ProcessFinder.GetProcessInfo();
             if (!ProcessFinder.IsPortOpen(ProcessInfo))
                 throw new InvalidOperationException("Failed to connect to LCUx process port.");
         }

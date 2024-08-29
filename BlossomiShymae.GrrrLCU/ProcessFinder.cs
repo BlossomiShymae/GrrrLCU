@@ -9,29 +9,38 @@ namespace BlossomiShymae.GrrrLCU
     public static class ProcessFinder
     {
         /// <summary>
-        /// Get the current running League Client process information.
+        /// Get the current running League Client process.
         /// </summary>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public static ProcessInfo Get()
+        public static Process GetProcess()
         {
-            ProcessInfo? processInfo = null;
+            Process? process = null;
 
-            foreach (var process in Process.GetProcessesByName("LeagueClientUx"))
+            foreach (var _process in Process.GetProcessesByName("LeagueClientUx"))
             {
-                switch(process.ProcessName)
+                switch(_process.ProcessName)
                 {
                     case "LeagueClientUx":
-                        processInfo = new ProcessInfo(process);
+                        process = _process;
                         break;
                     default:
                         break;
                 }
 
-                if (processInfo != null) break;
+                if (process != null) break;
             }
 
-            return processInfo ?? throw new InvalidOperationException("Failed to find LCUx process.");
+            return process ?? throw new InvalidOperationException("Failed to find LCUx process.");
+        }
+        /// <summary>
+        /// Get the current running League Client process information.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static ProcessInfo GetProcessInfo()
+        {
+            return new ProcessInfo(GetProcess());
         }
 
         /// <summary>
@@ -44,7 +53,7 @@ namespace BlossomiShymae.GrrrLCU
         {
             try
             {
-                Get();
+                GetProcessInfo();
                 return true;
             }
             catch (InvalidOperationException)
@@ -61,7 +70,7 @@ namespace BlossomiShymae.GrrrLCU
         {
             try
             {
-                var processInfo = Get();
+                var processInfo = GetProcessInfo();
                 return IsPortOpen(processInfo);
             }
             catch (InvalidOperationException)
