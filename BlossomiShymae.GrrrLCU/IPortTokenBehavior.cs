@@ -10,7 +10,7 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// A behavioral contract to provide a token and port from a process.
     /// </summary>
-    public interface IPortTokenBehavior
+    internal interface IPortTokenBehavior
     {
         /// <summary>
         /// Attempt to get the token and port of a League Client process.

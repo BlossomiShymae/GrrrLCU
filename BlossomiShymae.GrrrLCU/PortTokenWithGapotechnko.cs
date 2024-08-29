@@ -11,7 +11,7 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// A behavioral port token class that uses the Gapotechnko package.
     /// </summary>
-    public class PortTokenWithGapotechnko : IPortTokenBehavior
+    internal class PortTokenWithGapotechnko : IPortTokenBehavior
     {
         /// <summary>
         /// Attempt to get the token and port of a League Client process with the Gapotechnko package.

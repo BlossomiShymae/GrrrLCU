@@ -10,7 +10,7 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// A behaviorial port token class that uses the lockfile.
     /// </summary>
-    public class PortTokenWithLockfile : IPortTokenBehavior
+    internal class PortTokenWithLockfile : IPortTokenBehavior
     {
         /// <summary>
         /// Attempt to get the token and port of a League Client process from the lockfile.

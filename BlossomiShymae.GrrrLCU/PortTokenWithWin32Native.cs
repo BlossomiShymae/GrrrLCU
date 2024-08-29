@@ -10,7 +10,7 @@ namespace BlossomiShymae.GrrrLCU
     /// <summary>
     /// A behavioral port token class that uses native Win32 methodss.
     /// </summary>
-    public class PortTokenWithWin32Native : IPortTokenBehavior
+    internal class PortTokenWithWin32Native : IPortTokenBehavior
     {
         /// <summary>
         /// Attempt to get the token and port of a League Client process using native Win32 methods.
