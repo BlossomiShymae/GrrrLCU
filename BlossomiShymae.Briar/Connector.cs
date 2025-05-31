@@ -1,4 +1,5 @@
 using System.Net.WebSockets;
+using BlossomiShymae.Briar.GameClient;
 using BlossomiShymae.Briar.Rest;
 using BlossomiShymae.Briar.Utils;
 using BlossomiShymae.Briar.WebSocket;
@@ -30,7 +31,7 @@ namespace BlossomiShymae.Briar
                     RemoteCertificateValidationCallback = (a, b, c, d) => true,
                 },
             };
-            
+
             var client = new LcuWebsocketClient(uri, logger, factory);
 
             return client;
@@ -50,6 +51,15 @@ namespace BlossomiShymae.Briar
         public static LcuHttpClient GetLcuHttpClientInstance()
         {
             return LcuHttpClient.Instance;
+        }
+
+        /// <summary>
+        /// Get a shared instance of the HTTP client for the Game Client.
+        /// </summary>
+        /// <returns></returns>
+        public static GameHttpClient GetGameHttpClientInstance()
+        {
+            return GameHttpClient.Instance;
         }
     }
 }
