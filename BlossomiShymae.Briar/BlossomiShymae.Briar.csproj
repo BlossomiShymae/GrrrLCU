@@ -6,14 +6,14 @@
     <Nullable>enable</Nullable>
 
     <Authors>BlossomiShymae</Authors>
-    <Description>A simple wrapper for the LCU. Grrr. x3</Description>
+    <Description>A simple wrapper for the League Client and Game Client APIs. </Description>
     <PackageProjectUrl>https://github.com/BlossomiShymae/Briar</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/BlossomiShymae/Briar</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <PackageTags>lcu;lcuapi;leagueoflegends;lol</PackageTags>
+    <PackageTags>lcu;lcuapi;leagueoflegends;lol;ingameapi</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <Version>0.1.0</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
