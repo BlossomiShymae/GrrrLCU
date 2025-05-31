@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+
 using BlossomiShymae.Briar.Utils.Win32;
 
 [assembly:InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]

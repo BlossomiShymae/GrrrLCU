@@ -1,8 +1,6 @@
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Xml;
+
 using BlossomiShymae.Briar.Utils.Behaviors;
-using Gapotchenko.FX.Diagnostics;
 
 namespace BlossomiShymae.Briar.Utils
 {

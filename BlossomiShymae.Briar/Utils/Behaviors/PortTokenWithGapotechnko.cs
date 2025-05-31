@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
-using Gapotchenko.FX.Diagnostics;
 using System.Runtime.CompilerServices;
+
+using Gapotchenko.FX.Diagnostics;
 
 [assembly:InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
 namespace BlossomiShymae.Briar.Utils.Behaviors
