@@ -2,9 +2,7 @@
 
 [![NuGet Stable](https://img.shields.io/nuget/v/BlossomiShymae.Briar.svg?style=flat-square&logo=nuget&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.Briar/) [![NuGet Downloads](https://img.shields.io/nuget/dt/BlossomiShymae.Briar?style=flat-square&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.Briar/)
 
-<img src="./logo.png" width="400">
-
-Briar is a wrapper for the LCU API which is unofficially provided by Riot Games.
+Briar is a wrapper for the League Client and Game Client APIs which are unofficially provided by Riot Games.
 
 This library is currently compatible with .NET 8 and higher for Windows.
 
@@ -81,7 +79,29 @@ var isPortOpen = ProcessFinder.IsPortOpen();
 var riotAuthentication = new RiotAuthentication(processInfo.RemotingAuthToken);
 ```
 
-### WebSockets
+### Requesting the Game Client
+
+#### Getting the GameHttpClient instance
+
+```csharp
+var client = Connector.GetGameHttpClientInstance();
+```
+
+#### General request
+
+```csharp
+var response = await client.SendAsync(new(HttpMethod.Get, "/liveclientdata/activeplayername"));
+
+var me = await response.Content.ReadFromJsonAsync<string>();
+```
+
+#### GET request
+
+```csharp
+var me = await client.GetFromJsonAsync<string>("/liveclientdata/activeplayername");
+```
+
+### LCU WebSocket
 
 This library uses the `Websocket.Client` wrapper.
 
@@ -124,46 +144,4 @@ client.Send(message);
 
 // We will need an event loop for the background thread to process.
 while(true) await Task.Delay(TimeSpan.FromSeconds(1));
-```
-
-> [!WARNING]
-> Whenever a public application is made with Briar, graceful reconnection is needed as the end-user may restart, exit, or open the League client. The built-in reconnection handler will not be enough for this case.
-
-An example pattern using threads is provided to show how reconnection can be done.
-
-```csharp
-public class ExampleViewModel
-{
-	public WebsocketClient? Client { get; set; }
-
-	public ExampleViewModel()
-	{
-		new Thread(InitializeWebsocket) { IsBackground = true }.Start();
-	}
-
-	private void InitializeWebsocket()
-	{
-		while (true)
-		{
-			try
-			{
-				var client = Connector.CreateLcuWebsocketClient();
-				client.DisconnectionHappened.Subscribe(OnDisconnection);
-
-				client.Start();
-				client.Send(new EventMessage(EventRequestType.Subscribe, EventKinds.OnJsonApiEvent));
-				Client = client;
-				return;
-			}
-			catch (Exception) { }
-			Thread.Sleep(TimeSpan.FromSeconds(5));
-		}
-	}
-
-	private void OnDisconnection(DisconnectionInfo info)
-	{
-		Client?.Dispose();
-		new Thread(InitializeWebsocket) { IsBackground = true }.Start();
-	}
-}
 ```
