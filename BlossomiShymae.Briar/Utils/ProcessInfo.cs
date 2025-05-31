@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml;
+using BlossomiShymae.Briar.Utils.Behaviors;
 using Gapotchenko.FX.Diagnostics;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.Utils
 {
     /// <summary>
     /// Represents process information of the League Client.

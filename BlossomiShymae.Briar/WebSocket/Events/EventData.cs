@@ -1,7 +1,7 @@
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.WebSocket.Events
 {
     /// <summary>
     /// Represents the data of an League Client websocket message.

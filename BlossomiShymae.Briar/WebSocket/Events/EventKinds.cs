@@ -1,4 +1,4 @@
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.WebSocket.Events
 {
     /// <summary>
     /// Documented kinds for event messages.

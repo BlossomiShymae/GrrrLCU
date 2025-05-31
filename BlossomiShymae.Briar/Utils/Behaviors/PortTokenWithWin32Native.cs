@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using BlossomiShymae.Briar.Utils.Win32;
 
-namespace BlossomiShymae.Briar
+[assembly:InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
+namespace BlossomiShymae.Briar.Utils.Behaviors
 {
     /// <summary>
     /// A behavioral port token class that uses native Win32 methodss.
@@ -36,7 +39,7 @@ namespace BlossomiShymae.Briar
                     exception = null;
                     return true;
                 }
-                else throw new InvalidOperationException(ProcessCommandLine.ErrorToString(rc)); 
+                else throw new InvalidOperationException(ProcessCommandLine.ErrorToString(rc));
             }
             catch (Exception e)
             {

@@ -2,10 +2,11 @@ using System.Net.WebSockets;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text.Json;
+using BlossomiShymae.Briar.WebSocket.Events;
 using Microsoft.Extensions.Logging;
 using Websocket.Client;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.WebSocket
 {
     /// <summary>
     /// A simple websocket client for the League Client.

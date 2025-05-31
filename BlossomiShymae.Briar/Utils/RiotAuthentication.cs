@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.Utils
 {
     /// <summary>
     /// Repesents authentication for the League Client.

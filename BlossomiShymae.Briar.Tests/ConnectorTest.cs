@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using BlossomiShymae.Briar.Rest;
 using Xunit.Abstractions;
 
 namespace BlossomiShymae.Briar.Tests

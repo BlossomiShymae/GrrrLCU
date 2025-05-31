@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.Utils.Behaviors
 {
     /// <summary>
     /// A behavioral contract to provide a token and port from a process.

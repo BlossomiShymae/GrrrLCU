@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.WebSocket.Events
 {
     internal class EventMessageJsonConverter : JsonConverter<EventMessage>
     {

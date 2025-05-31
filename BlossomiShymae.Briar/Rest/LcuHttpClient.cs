@@ -1,6 +1,6 @@
-using System.Text.Json;
+using BlossomiShymae.Briar.Utils;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.Rest
 {
     /// <summary>
     /// A simple HTTP client for the League Client.

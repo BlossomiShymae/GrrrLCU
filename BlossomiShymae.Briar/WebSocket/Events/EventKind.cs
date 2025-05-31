@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BlossomiShymae.Briar;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.WebSocket.Events
 {
     /// <summary>
     /// The kind of an event message including prefix and path.

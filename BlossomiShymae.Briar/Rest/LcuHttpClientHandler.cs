@@ -1,4 +1,6 @@
-namespace BlossomiShymae.Briar
+using BlossomiShymae.Briar.Utils;
+
+namespace BlossomiShymae.Briar.Rest
 {
     internal class LcuHttpClientHandler : HttpClientHandler
     {

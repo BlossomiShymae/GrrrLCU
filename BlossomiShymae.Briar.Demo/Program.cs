@@ -2,6 +2,10 @@
 using System.Text.Json;
 using System.Timers;
 using BlossomiShymae.Briar;
+using BlossomiShymae.Briar.Rest;
+using BlossomiShymae.Briar.Utils;
+using BlossomiShymae.Briar.WebSocket;
+using BlossomiShymae.Briar.WebSocket.Events;
 using Spectre.Console;
 using Spectre.Console.Json;
 using Websocket.Client;

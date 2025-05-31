@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Net.Sockets;
 
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.Utils
 {
     /// <summary>
     /// A helper class to find the League Client process.

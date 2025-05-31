@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using BlossomiShymae.Briar.Utils.Behaviors;
 
 namespace BlossomiShymae.Briar.Benchmarks;
 

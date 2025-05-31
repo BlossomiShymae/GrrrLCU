@@ -1,5 +1,7 @@
 using System.Net.WebSockets;
-
+using BlossomiShymae.Briar.Rest;
+using BlossomiShymae.Briar.Utils;
+using BlossomiShymae.Briar.WebSocket;
 using Microsoft.Extensions.Logging;
 
 using Websocket.Client;

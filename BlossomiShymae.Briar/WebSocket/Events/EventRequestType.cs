@@ -1,4 +1,4 @@
-namespace BlossomiShymae.Briar
+namespace BlossomiShymae.Briar.WebSocket.Events
 {
     /// <summary>
     /// The websocket operations available in a event message.
