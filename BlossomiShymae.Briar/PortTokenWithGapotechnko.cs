@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gapotchenko.FX.Diagnostics;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// A behavioral port token class that uses the Gapotechnko package.

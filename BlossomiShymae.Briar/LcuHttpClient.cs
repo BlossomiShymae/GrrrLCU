@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// A simple HTTP client for the League Client.

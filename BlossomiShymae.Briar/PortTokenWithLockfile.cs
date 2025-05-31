@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// A behaviorial port token class that uses the lockfile.

@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
 using Xunit.Abstractions;
 
-namespace BlossomiShymae.GrrrLCU.Tests
+namespace BlossomiShymae.Briar.Tests
 {
     public class ConnectorTest
     {

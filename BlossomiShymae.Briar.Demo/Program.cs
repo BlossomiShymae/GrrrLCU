@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using System.Timers;
-using BlossomiShymae.GrrrLCU;
+using BlossomiShymae.Briar;
 using Spectre.Console;
 using Spectre.Console.Json;
 using Websocket.Client;
@@ -80,8 +80,8 @@ public class Controller(LcuHttpClient lcuHttpClient, JsonSerializerOptions jsonS
             DetailKey = "pre_translated_details",
             Data = new
             {
-                Title = "GrrrLCU",
-                Details = "This is a test notification from GrrrLCU."
+                Title = "Briar",
+                Details = "This is a test notification from Briar."
             }
         };
         await LcuHttpClient.PostAsJsonAsync("/player-notifications/v1/notifications", playerNotificationResource);

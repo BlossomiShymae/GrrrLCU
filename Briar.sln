@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.GrrrLCU", "BlossomiShymae.GrrrLCU\BlossomiShymae.GrrrLCU.csproj", "{ECEA83F2-3FBE-4D74-9DF3-D79FBCEAD0E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.Briar", "BlossomiShymae.Briar\BlossomiShymae.Briar.csproj", "{ECEA83F2-3FBE-4D74-9DF3-D79FBCEAD0E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.GrrrLCU.Tests", "BlossomiShymae.GrrrLCU.Tests\BlossomiShymae.GrrrLCU.Tests.csproj", "{25FEAAAE-6354-41FE-89D8-B32B8BA11D07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.Briar.Tests", "BlossomiShymae.Briar.Tests\BlossomiShymae.Briar.Tests.csproj", "{25FEAAAE-6354-41FE-89D8-B32B8BA11D07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.GrrrLCU.Demo", "BlossomiShymae.GrrrLCU.Demo\BlossomiShymae.GrrrLCU.Demo.csproj", "{A7375424-B36D-4E85-BEFD-22050086C03B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.Briar.Demo", "BlossomiShymae.Briar.Demo\BlossomiShymae.Briar.Demo.csproj", "{A7375424-B36D-4E85-BEFD-22050086C03B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.GrrrLCU.Benchmarks", "BlossomiShymae.GrrrLCU.Benchmarks\BlossomiShymae.GrrrLCU.Benchmarks.csproj", "{731FF271-0272-464E-B8F6-BA17BAE942AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlossomiShymae.Briar.Benchmarks", "BlossomiShymae.Briar.Benchmarks\BlossomiShymae.Briar.Benchmarks.csproj", "{731FF271-0272-464E-B8F6-BA17BAE942AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

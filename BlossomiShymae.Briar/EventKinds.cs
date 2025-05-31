@@ -1,4 +1,4 @@
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// Documented kinds for event messages.

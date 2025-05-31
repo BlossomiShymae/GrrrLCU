@@ -1,36 +1,34 @@
-# GrrrLCU
+# Briar
 
-[![NuGet Stable](https://img.shields.io/nuget/v/BlossomiShymae.GrrrLCU.svg?style=flat-square&logo=nuget&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.GrrrLCU/) [![NuGet Downloads](https://img.shields.io/nuget/dt/BlossomiShymae.GrrrLCU?style=flat-square&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.GrrrLCU/)
+[![NuGet Stable](https://img.shields.io/nuget/v/BlossomiShymae.Briar.svg?style=flat-square&logo=nuget&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.Briar/) [![NuGet Downloads](https://img.shields.io/nuget/dt/BlossomiShymae.Briar?style=flat-square&logoColor=black&labelColor=69ffbe&color=77077a)](https://www.nuget.org/packages/BlossomiShymae.Briar/)
 
 <img src="./logo.png" width="400">
 
-GrrrLCU is a wrapper for the LCU API which is unofficially provided by Riot Games.
+Briar is a wrapper for the LCU API which is unofficially provided by Riot Games.
 
 This library is currently compatible with .NET 8 and higher for Windows.
 
 ## Contributors
 
-<a href="https://github.com/BlossomiShymae/GrrrLCU/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=BlossomiShymae/GrrrLCU" />
+<a href="https://github.com/BlossomiShymae/Briar/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=BlossomiShymae/Briar" />
 </a>
 
 ## Usage
 
 ### Installation
 
-Grrr, GRRR. x3
-
 ```bash
-dotnet install BlossomiShymae.GrrrLCU
+dotnet install BlossomiShymae.Briar
 ```
 
 ### Sample application
 
-[A demonstration of GrrrLCU with more code examples can be found here.](https://github.com/BlossomiShymae/GrrrLCU/blob/main/BlossomiShymae.GrrrLCU.Demo/Program.cs)
+[A demonstration of Briar with more code examples can be found here.](https://github.com/BlossomiShymae/Briar/blob/main/BlossomiShymae.Briar.Demo/Program.cs)
 
 To run the demo, clone the repo and then do:
 ```bash
-dotnet run --project BlossomiShymae.GrrrLCU.Demo
+dotnet run --project BlossomiShymae.Briar.Demo
 ```
 
 ### Requesting the LCU
@@ -129,7 +127,7 @@ while(true) await Task.Delay(TimeSpan.FromSeconds(1));
 ```
 
 > [!WARNING]
-> Whenever a public application is made with GrrrLCU, graceful reconnection is needed as the end-user may restart, exit, or open the League client. The built-in reconnection handler will not be enough for this case.
+> Whenever a public application is made with Briar, graceful reconnection is needed as the end-user may restart, exit, or open the League client. The built-in reconnection handler will not be enough for this case.
 
 An example pattern using threads is provided to show how reconnection can be done.
 

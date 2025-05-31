@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using BlossomiShymae.GrrrLCU;
+using BlossomiShymae.Briar;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// The kind of an event message including prefix and path.

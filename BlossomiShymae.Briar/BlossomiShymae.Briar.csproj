@@ -7,9 +7,9 @@
 
     <Authors>BlossomiShymae</Authors>
     <Description>A simple wrapper for the LCU. Grrr. x3</Description>
-    <PackageProjectUrl>https://github.com/BlossomiShymae/GrrrLCU</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/BlossomiShymae/Briar</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/BlossomiShymae/GrrrLCU</RepositoryUrl>
+    <RepositoryUrl>https://github.com/BlossomiShymae/Briar</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -17,7 +17,7 @@
     <PackageIcon>icon.png</PackageIcon>
     <Version>0.14.0</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Title>GrrrLCU</Title>
+    <Title>Briar</Title>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// Messages that are sent via the League Client websocket.

@@ -1,4 +1,4 @@
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// The websocket operations available in a event message.

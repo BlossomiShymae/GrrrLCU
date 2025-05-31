@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlossomiShymae.GrrrLCU\BlossomiShymae.GrrrLCU.csproj" />
+    <ProjectReference Include="..\BlossomiShymae.Briar\BlossomiShymae.Briar.csproj" />
   </ItemGroup>
 
 </Project>

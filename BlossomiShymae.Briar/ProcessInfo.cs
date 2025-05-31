@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using Gapotchenko.FX.Diagnostics;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// Represents process information of the League Client.

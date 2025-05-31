@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\BlossomiShymae.GrrrLCU\BlossomiShymae.GrrrLCU.csproj" />
+    <ProjectReference Include="..\BlossomiShymae.Briar\BlossomiShymae.Briar.csproj" />
   </ItemGroup>
 
   <ItemGroup>

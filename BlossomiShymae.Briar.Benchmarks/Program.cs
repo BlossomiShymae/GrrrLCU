@@ -2,7 +2,7 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-namespace BlossomiShymae.GrrrLCU.Benchmarks;
+namespace BlossomiShymae.Briar.Benchmarks;
 
 public class PortToken
 {

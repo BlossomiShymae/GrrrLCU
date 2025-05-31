@@ -5,7 +5,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Websocket.Client;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// A simple websocket client for the League Client.

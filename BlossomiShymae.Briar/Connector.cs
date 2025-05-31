@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 using Websocket.Client;
 
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     /// <summary>
     /// Connector to exchange requests with the League Client.

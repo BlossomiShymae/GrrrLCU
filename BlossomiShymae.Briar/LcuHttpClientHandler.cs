@@ -1,4 +1,4 @@
-namespace BlossomiShymae.GrrrLCU
+namespace BlossomiShymae.Briar
 {
     internal class LcuHttpClientHandler : HttpClientHandler
     {
