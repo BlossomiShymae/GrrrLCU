@@ -23,7 +23,7 @@ namespace BlossomiShymae.Briar.Utils
         [
             new PortTokenWithWin32Native(),
             new PortTokenWithLockfile(),
-            new PortTokenWithGapotechnko()
+            new PortTokenWithGapotchenko()
         ];
 
         internal ProcessInfo(Process process)

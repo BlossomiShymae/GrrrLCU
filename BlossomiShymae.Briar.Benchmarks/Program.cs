@@ -21,7 +21,7 @@ public class PortToken
     public bool WithLockfile() => new PortTokenWithLockfile().TryGet(_process, out var _, out var _, out var _);
 
     [Benchmark]
-    public bool WithGapotechnko() => new PortTokenWithGapotechnko().TryGet(_process, out var _, out var _, out var _);
+    public bool WithGapotechnko() => new PortTokenWithGapotchenko().TryGet(_process, out var _, out var _, out var _);
 
 }
 

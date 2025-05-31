@@ -24,6 +24,10 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
         {
             try
             {
+                if (!OperatingSystem.IsWindows())
+                {
+                    throw new PlatformNotSupportedException("This behavior is only supported on Windows");
+                }
                 var rc = ProcessCommandLine.Retrieve(process, out var cl);
                 if (rc == 0)
                 {

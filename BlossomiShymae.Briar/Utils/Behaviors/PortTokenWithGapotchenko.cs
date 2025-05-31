@@ -8,12 +8,12 @@ using Gapotchenko.FX.Diagnostics;
 namespace BlossomiShymae.Briar.Utils.Behaviors
 {
     /// <summary>
-    /// A behavioral port token class that uses the Gapotechnko package.
+    /// A behavioral port token class that uses the Gapotchenko package.
     /// </summary>
-    internal class PortTokenWithGapotechnko : IPortTokenBehavior
+    internal class PortTokenWithGapotchenko : IPortTokenBehavior
     {
         /// <summary>
-        /// Attempt to get the token and port of a League Client process with the Gapotechnko package.
+        /// Attempt to get the token and port of a League Client process with the Gapotchenko package.
         /// </summary>
         /// <param name="process"></param>
         /// <param name="remotingAuthToken"></param>
