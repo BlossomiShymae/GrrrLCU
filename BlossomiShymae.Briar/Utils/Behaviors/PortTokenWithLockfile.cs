@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
+[assembly: InternalsVisibleTo("BlossomiShymae.Briar.Tests")]
 namespace BlossomiShymae.Briar.Utils.Behaviors
 {
     /// <summary>

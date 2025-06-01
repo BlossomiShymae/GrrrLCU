@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using System.Net.Http.Json;
 
 using BlossomiShymae.Briar.GameClient;
 using BlossomiShymae.Briar.Rest;
+using BlossomiShymae.Briar.Utils.Behaviors;
 
 using Xunit.Abstractions;
 
@@ -18,6 +20,22 @@ namespace BlossomiShymae.Briar.Tests
             _output = output;
             _lcuHttpClient = Connector.GetLcuHttpClientInstance();
             _gameHttpClient = Connector.GetGameHttpClientInstance();
+        }
+
+        [Fact]
+        [Trait("Method", "Lockfile")]
+        public void LockfileTest()
+        {
+            var process = Process.GetProcessesByName("LeagueClientUx").First();
+
+            new PortTokenWithLockfile().TryGet(process, out var token, out var port, out var ex);
+            if (ex is Exception e)
+            {
+                throw e;
+            }
+
+            Assert.True(token != null);
+            Assert.True(port > 0);
         }
 
         [Fact]
