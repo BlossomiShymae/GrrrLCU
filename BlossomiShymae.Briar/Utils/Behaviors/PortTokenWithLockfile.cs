@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
+[assembly: InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
 namespace BlossomiShymae.Briar.Utils.Behaviors
 {
     /// <summary>
@@ -22,9 +22,13 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
         {
             try
             {
-                var path = Path.GetDirectoryName(process.MainModule!.FileName.AsSpan());
-                var lockfilePath = Path.Join(path, "lockfile");
-
+                string path = Path.GetDirectoryName(process.MainModule!.FileName)!;
+                string lockfilePath = Path.Join(path, "lockfile");
+                while (!File.Exists(lockfilePath) || Path.GetPathRoot(path) != path)
+                {
+                    path = Directory.GetParent(path)!.FullName;
+                    lockfilePath = Path.Join(path, "lockfile");
+                }
                 using var lockfileStream = File.Open(lockfilePath, FileMode.Open, FileAccess.Read, FileShare.Write);
                 using var lockfileReader = new StreamReader(lockfileStream);
 
