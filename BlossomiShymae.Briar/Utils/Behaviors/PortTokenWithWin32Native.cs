@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-using BlossomiShymae.Briar.Utils.Win32;
+using BlossomiShymae.Briar.Utils.Windows;
 
 [assembly:InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
 namespace BlossomiShymae.Briar.Utils.Behaviors
