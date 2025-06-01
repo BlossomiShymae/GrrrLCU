@@ -24,7 +24,7 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
             {
                 string path = Path.GetDirectoryName(process.MainModule!.FileName)!;
                 string lockfilePath = Path.Join(path, "lockfile");
-                while (!File.Exists(lockfilePath) || Path.GetPathRoot(path) != path)
+                while (!File.Exists(lockfilePath))
                 {
                     if (Directory.GetParent(path) is DirectoryInfo parent)
                     {
@@ -33,6 +33,10 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
                     else
                     {
                         path = Path.GetPathRoot(path)!;
+                    }
+                    if (Path.GetPathRoot(path) == path)
+                    {
+                        break;
                     }
                     lockfilePath = Path.Join(path, "lockfile");
                     
