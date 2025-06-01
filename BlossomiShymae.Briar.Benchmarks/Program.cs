@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+
 using BlossomiShymae.Briar.Utils.Behaviors;
 
 namespace BlossomiShymae.Briar.Benchmarks;
@@ -19,9 +21,6 @@ public class PortToken
 
     [Benchmark]
     public bool WithLockfile() => new PortTokenWithLockfile().TryGet(_process, out var _, out var _, out var _);
-
-    [Benchmark]
-    public bool WithGapotechnko() => new PortTokenWithGapotchenko().TryGet(_process, out var _, out var _, out var _);
 
 }
 
