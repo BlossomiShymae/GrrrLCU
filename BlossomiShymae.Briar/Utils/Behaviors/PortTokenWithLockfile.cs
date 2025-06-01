@@ -41,7 +41,7 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
                     lockfilePath = Path.Join(path, "lockfile");
                     
                 }
-                using var lockfileStream = File.Open(lockfilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                using var lockfileStream = File.Open(lockfilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 using var lockfileReader = new StreamReader(lockfileStream);
 
                 var lockfile = lockfileReader.ReadToEnd();
