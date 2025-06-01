@@ -22,6 +22,9 @@ public class PortToken
     [Benchmark]
     public bool WithLockfile() => new PortTokenWithLockfile().TryGet(_process, out var _, out var _, out var _);
 
+    [Benchmark]
+    public bool WithProcessList() => new PortTokenWithProcessList().TryGet(_process, out var _, out var _, out var _);
+
 }
 
 public class Program

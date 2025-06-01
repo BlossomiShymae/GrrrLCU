@@ -39,6 +39,22 @@ namespace BlossomiShymae.Briar.Tests
         }
 
         [Fact]
+        [Trait("Method", "ProcessList")]
+        public void ProcessListTest()
+        {
+            var process = Process.GetProcessesByName("LeagueClientUx").First();
+
+            new PortTokenWithProcessList().TryGet(process, out var token, out var port, out var ex);
+            if (ex is Exception e)
+            {
+                throw e;
+            }
+
+            Assert.True(token != null);
+            Assert.True(port > 0);
+        }
+
+        [Fact]
         [Trait("API", "LCU")]
         public async Task LcuSendAsyncTest()
         {

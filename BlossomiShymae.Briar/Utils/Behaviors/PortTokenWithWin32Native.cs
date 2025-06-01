@@ -1,10 +1,10 @@
+using BlossomiShymae.Briar.Utils.Windows;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-using BlossomiShymae.Briar.Utils.Windows;
-
-[assembly:InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
+[assembly: InternalsVisibleTo("BlossomiShymae.Briar.Benchmarks")]
+[assembly: InternalsVisibleTo("BlossomiShymae.Briar.Tests")]
 namespace BlossomiShymae.Briar.Utils.Behaviors
 {
     /// <summary>
@@ -26,7 +26,7 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
             {
                 if (!OperatingSystem.IsWindows())
                 {
-                    throw new PlatformNotSupportedException("This behavior is only supported on Windows");
+                    throw new PlatformNotSupportedException("This behavior is only supported on Windows.");
                 }
                 var rc = ProcessCommandLine.Retrieve(process, out var cl);
                 if (rc == 0)
