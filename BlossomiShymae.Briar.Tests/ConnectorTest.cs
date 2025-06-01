@@ -1,6 +1,8 @@
 using System.Net.Http.Json;
+
 using BlossomiShymae.Briar.GameClient;
 using BlossomiShymae.Briar.Rest;
+
 using Xunit.Abstractions;
 
 namespace BlossomiShymae.Briar.Tests
@@ -19,6 +21,7 @@ namespace BlossomiShymae.Briar.Tests
         }
 
         [Fact]
+        [Trait("API", "LCU")]
         public async Task LcuSendAsyncTest()
         {
             var response = await _lcuHttpClient.SendAsync(new(HttpMethod.Get, "/lol-summoner/v1/current-summoner"));
@@ -30,6 +33,7 @@ namespace BlossomiShymae.Briar.Tests
         }
 
         [Fact]
+        [Trait("API", "LCU")]
         public async Task LcuGetAsyncTest()
         {
             var response = await _lcuHttpClient.GetAsync("/lol-summoner/v1/current-summoner");
@@ -41,6 +45,7 @@ namespace BlossomiShymae.Briar.Tests
         }
 
         [Fact]
+        [Trait("API", "LCU")]
         public async Task LcuGetFromJsonAsyncTest()
         {
             var data = await _lcuHttpClient.GetFromJsonAsync<Summoner>("/lol-summoner/v1/current-summoner");
@@ -50,6 +55,7 @@ namespace BlossomiShymae.Briar.Tests
         }
 
         [Fact]
+        [Trait("API", "Game")]
         public async Task GameGetAsyncTest()
         {
             var response = await _gameHttpClient.GetAsync("/liveclientdata/activeplayername");
@@ -61,6 +67,7 @@ namespace BlossomiShymae.Briar.Tests
         }
 
         [Fact]
+        [Trait("API", "Game")]
         public async Task GameGetFromJsonAsyncTest()
         {
             var data = await _gameHttpClient.GetFromJsonAsync<string>("/liveclientdata/activeplayername");
