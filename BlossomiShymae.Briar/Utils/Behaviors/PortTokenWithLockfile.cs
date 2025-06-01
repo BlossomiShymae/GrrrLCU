@@ -26,8 +26,16 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
                 string lockfilePath = Path.Join(path, "lockfile");
                 while (!File.Exists(lockfilePath) || Path.GetPathRoot(path) != path)
                 {
-                    path = Directory.GetParent(path)!.FullName;
+                    if (Directory.GetParent(path) is DirectoryInfo parent)
+                    {
+                        path = parent.FullName;
+                    }
+                    else
+                    {
+                        path = Path.GetPathRoot(path)!;
+                    }
                     lockfilePath = Path.Join(path, "lockfile");
+                    
                 }
                 using var lockfileStream = File.Open(lockfilePath, FileMode.Open, FileAccess.Read, FileShare.Write);
                 using var lockfileReader = new StreamReader(lockfileStream);
