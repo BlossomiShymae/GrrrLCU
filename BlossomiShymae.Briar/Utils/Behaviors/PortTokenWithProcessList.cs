@@ -44,7 +44,7 @@ namespace BlossomiShymae.Briar.Utils.Behaviors
                     processStartInfo = new ProcessStartInfo()
                     {
                         FileName = "/bin/bash",
-                        Arguments = "-c \"\"\"ps x -o args | grep 'LeagueClientUx'\"\"\"",
+                        Arguments = "-c \"ps x -o args | grep 'LeagueClientUx'\"",
                         WindowStyle = ProcessWindowStyle.Hidden,
                         CreateNoWindow = true,
                         RedirectStandardOutput = true,
