@@ -4,7 +4,7 @@
 
 Briar is a wrapper for the League Client and Game Client APIs which are unofficially provided by Riot Games.
 
-This library is currently compatible with .NET 8 and higher for Windows.
+This library is currently compatible with .NET 8 and higher for Windows and MacOS.
 
 ## Contributors
 
