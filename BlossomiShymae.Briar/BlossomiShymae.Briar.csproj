@@ -15,7 +15,7 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>lcu;lcuapi;leagueoflegends;lol;ingameapi</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Title>Briar</Title>
   </PropertyGroup>
