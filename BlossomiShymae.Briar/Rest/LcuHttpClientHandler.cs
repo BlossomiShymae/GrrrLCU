@@ -35,10 +35,8 @@ namespace BlossomiShymae.Briar.Rest
                     _isFailing = new(() => false);
                     SetProcessInfo();
                 }
-
                 PrepareRequestMessage(request);
                 var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
-
                 return response;
             }
             catch (InvalidOperationException)
@@ -46,15 +44,13 @@ namespace BlossomiShymae.Briar.Rest
                 _isFailing = new(() => true);
                 throw;
             }
-            catch (HttpRequestException)
+            catch (Exception ex) when (ex is HttpRequestException || ex is UriFormatException)
             {
                 try
                 {
                     SetProcessInfo();
-
                     PrepareRequestMessage(request);
                     var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
-
                     return response;
                 }
                 catch (InvalidOperationException)
@@ -79,9 +75,7 @@ namespace BlossomiShymae.Briar.Rest
                     _isFailing = new(() => false);
                     SetProcessInfo();
                 }
-
                 PrepareRequestMessage(request);
-
                 return base.Send(request, cancellationToken);
             }
             catch (InvalidOperationException)
@@ -89,14 +83,12 @@ namespace BlossomiShymae.Briar.Rest
                 _isFailing = new(() => true);
                 throw;
             }
-            catch (HttpRequestException)
+            catch (Exception ex) when (ex is HttpRequestException || ex is UriFormatException)
             {
                 try
                 {
                     SetProcessInfo();
-
                     PrepareRequestMessage(request);
-
                     return base.Send(request, cancellationToken);
                 }
                 catch (InvalidOperationException)
