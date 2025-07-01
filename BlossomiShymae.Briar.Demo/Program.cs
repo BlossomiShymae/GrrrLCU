@@ -1,29 +1,35 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using System.Timers;
+
 using BlossomiShymae.Briar;
 using BlossomiShymae.Briar.Rest;
 using BlossomiShymae.Briar.Utils;
 using BlossomiShymae.Briar.WebSocket;
 using BlossomiShymae.Briar.WebSocket.Events;
+
 using Spectre.Console;
-using Spectre.Console.Json;
+
 using Websocket.Client;
+
 using Timer = System.Timers.Timer;
 
 var lcuHttpClient = Connector.GetLcuHttpClientInstance();
+var httpClient = new HttpClient();
 var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, WriteIndented = true};
+var controller = new Controller(lcuHttpClient, httpClient, jsonSerializerOptions);
+Timer connectionTimer;
 
-var controller = new Controller(lcuHttpClient, jsonSerializerOptions);
+while (true)
+{
+    controller.IsRunning = true;
+    connectionTimer = new Timer(TimeSpan.FromSeconds(5));
+    connectionTimer.Elapsed += OnElapsed;
+    connectionTimer.Enabled = true;
+    connectionTimer.Start();
 
-var connectionTimer = new Timer(TimeSpan.FromSeconds(5));
-
-connectionTimer.Elapsed += OnElapsed;
-connectionTimer.Enabled = true;
-connectionTimer.Start();
-
-while (controller.IsRunning) await Task.Delay(TimeSpan.FromSeconds(1));
-
+    while (controller.IsRunning) await Task.Delay(TimeSpan.FromSeconds(1));
+}
 
 async void OnElapsed(object? sender, ElapsedEventArgs elapsedEventArgs)
 {
@@ -39,9 +45,10 @@ async void OnElapsed(object? sender, ElapsedEventArgs elapsedEventArgs)
     }
 }
 
-public class Controller(LcuHttpClient lcuHttpClient, JsonSerializerOptions jsonSerializerOptions)
+public class Controller(LcuHttpClient lcuHttpClient, HttpClient httpClient, JsonSerializerOptions jsonSerializerOptions)
 {
     public LcuHttpClient LcuHttpClient { get; } = lcuHttpClient;
+    public HttpClient HttpClient { get; } = httpClient;
     public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
     public LcuWebsocketClient? LcuWebsocketClient { get; set; }
     public bool IsRunning { get; set; } = true;
@@ -75,7 +82,7 @@ public class Controller(LcuHttpClient lcuHttpClient, JsonSerializerOptions jsonS
             ?? throw new Exception("Failed to get user resource");
         var championMasteries = (await LcuHttpClient.GetFromJsonAsync<List<ChampionMastery>>("/lol-champion-mastery/v1/local-player/champion-mastery")
             ?? throw new Exception("Failed to get champion masteries")).GetRange(0, 3);
-        var championSummaries = await LcuHttpClient.GetFromJsonAsync<List<ChampionSummary>>("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json", JsonSerializerOptions)
+        var championSummaries = await HttpClient.GetFromJsonAsync<List<ChampionSummary>>("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json", JsonSerializerOptions)
             ?? throw new Exception("Failed to get champion summaries");
 
         var playerNotificationResource = new PlayerNotificationResource()
@@ -138,17 +145,13 @@ public class Controller(LcuHttpClient lcuHttpClient, JsonSerializerOptions jsonS
     private void Client_DisconnectionHappened(DisconnectionInfo info)
     {
        LcuWebsocketClient?.Dispose();
-       Console.WriteLine("Disconecting from LCUx process...");
+       Console.WriteLine("Disconnecting from LCUx process...");
        IsRunning = false;
     }
 
     private void Client_EventReceived(EventMessage message)
     {
-        var jsonPanel = new Panel(new JsonText(JsonSerializer.Serialize(message, JsonSerializerOptions)))
-        {
-            Header = new PanelHeader("EventMessage"),
-        };
-        AnsiConsole.Write(jsonPanel);
+        // Do nothing
     }
 }
 

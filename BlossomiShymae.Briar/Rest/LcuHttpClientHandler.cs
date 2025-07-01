@@ -44,7 +44,7 @@ namespace BlossomiShymae.Briar.Rest
                 _isFailing = new(() => true);
                 throw;
             }
-            catch (Exception ex) when (ex is HttpRequestException || ex is UriFormatException)
+            catch (HttpRequestException)
             {
                 try
                 {
@@ -83,7 +83,7 @@ namespace BlossomiShymae.Briar.Rest
                 _isFailing = new(() => true);
                 throw;
             }
-            catch (Exception ex) when (ex is HttpRequestException || ex is UriFormatException)
+            catch (HttpRequestException)
             {
                 try
                 {
@@ -110,7 +110,8 @@ namespace BlossomiShymae.Briar.Rest
         {       
             if (BaseAddress != null)
             {
-                request.RequestUri = new Uri($"{request.RequestUri?.ToString().Replace("https://127.0.0.1", BaseAddress)}");
+                var requestUri = new Uri($"{BaseAddress}{request.RequestUri?.AbsolutePath ?? "/"}");
+                request.RequestUri = requestUri;
             }
             request.Headers.Authorization = RiotAuthentication?.ToAuthenticationHeaderValue();
         }
