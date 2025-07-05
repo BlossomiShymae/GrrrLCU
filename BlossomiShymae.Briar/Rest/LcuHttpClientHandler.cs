@@ -110,7 +110,7 @@ namespace BlossomiShymae.Briar.Rest
         {       
             if (BaseAddress != null)
             {
-                var requestUri = new Uri($"{BaseAddress}{request.RequestUri?.AbsolutePath ?? "/"}");
+                var requestUri = new Uri($"{BaseAddress}{request.RequestUri?.PathAndQuery ?? "/"}");
                 request.RequestUri = requestUri;
             }
             request.Headers.Authorization = RiotAuthentication?.ToAuthenticationHeaderValue();

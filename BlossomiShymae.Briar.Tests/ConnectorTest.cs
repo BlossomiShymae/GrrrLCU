@@ -89,6 +89,20 @@ namespace BlossomiShymae.Briar.Tests
         }
 
         [Fact]
+        [Trait("API", "LCU")]
+        public async Task LcuGetWithParamsTest()
+        {
+            var indexBegin = 10;
+            var indexEnd = 11;
+
+            var data = await _lcuHttpClient.GetFromJsonAsync<MatchHistoryList>($"/lol-match-history/v1/products/lol/current-summoner/matches?begIndex={indexBegin}&endIndex={indexEnd}");
+
+            Assert.True(data != null);
+            Assert.Equal(indexBegin, data.Games.GameIndexBegin);
+            Assert.Equal(indexEnd, data.Games.GameIndexEnd);
+        }
+
+        [Fact]
         [Trait("API", "Game")]
         public async Task GameGetAsyncTest()
         {
@@ -114,5 +128,17 @@ namespace BlossomiShymae.Briar.Tests
     public class Summoner
     {
         public required string GameName { get; set; }
+    }
+
+    public class MatchHistoryList
+    {
+        public required MatchHistoryGameList Games { get; set; }
+    }
+
+    public class MatchHistoryGameList
+    {
+        public required long GameIndexBegin { get; set; }
+        
+        public required long GameIndexEnd { get; set; }
     }
 }
